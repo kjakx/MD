@@ -15,10 +15,10 @@ inline long double LJ_potential(Molecule mi, Molecule mj)
 	dy = mj.qy - mi.qy;
 	dz = mj.qz - mi.qz;
 	r2 = dx * dx + dy * dy + dz * dz;
-	if (r2 > cutoff_distance^2) return 0;
+	if (r2 > CUTOFF_R2) return 0;
 	r6 = r2 * r2 * r2; 
 	r12 = r6 * r6;
 	// LJ potential (sigma and epsilon = 1.0 for simplicity.)
-	u = 4.0 * (1.0 / r12 - 1.0 / r6) + C0;
+	u = 4.0 * (1.0 / r12 - 1.0 / r6) + U0;
 	return u;
 }
