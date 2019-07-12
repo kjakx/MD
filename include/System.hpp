@@ -11,7 +11,7 @@ private:
 	vector<Molecule> molecules;
 	long double E = 0;
 	long double T = 0;
-	unsigned long int N;
+	//unsigned long int N;
 public:
 	System();
 	~System();
@@ -20,7 +20,7 @@ public:
 			  double px, double py, double pz);
 	void set_energy(long double E);
 	void set_temp(long double T);
-	void set_num_of_mol(unsigned long int N);
+	//void set_num_of_mol(unsigned long int N);
 
 	// getter
 	vector<Molecule>& get_molecules();
@@ -38,6 +38,12 @@ public:
 inline System()
 {
 	
+}
+
+inline ~System()
+{
+	
+}	
 
 inline void System::set_molecule(double qx, double qy, double qz,
 				 double px, double py, double pz);
@@ -89,13 +95,29 @@ inline long double System::get_kinetic_energy()
 inline long double System::get_potential_energy()
 {
 	vector<Molecule> ms = get_molecules();
+	double dx, dy, dz, df;
+	long double df r2, r6, r12;
 	for (int i = 0; i < ms.size() - 1; i++)
 	{
 		for (int j = i + 1; j < ms.size(); j++)
 		{
+			// distance between i-j
+			dx = ms[j].qx - ms[i].qx;
+			dy = ms[j].qy - ms[i].qy;
+			dz = ms[j].qz - ms[i].qz;
+			//adjust_pos(dx, dy, dz);
 			
+			r2 = dx * dx + dy * dy + dz * dz;
+			//if (r2 > cutoff_distance^2) continue;
+			r6 = r2 * r2 * r2; 
+			r12 = r6 * r6;
+			// calculate LJ potential
+			df = calculate_force(r2);
+			
+		}
+	}
+	return u;
 }
-	
 
 inline long double System::get_temp()
 {
