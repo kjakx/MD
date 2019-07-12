@@ -1,6 +1,7 @@
 #ifndef MOLECULE_HPP
 #define MOLECULE_HPP
 
+#include <math>
 #include <tuple>
 
 using namespace std;
@@ -50,8 +51,8 @@ inline tuple<double, double, double> Molecule::get_p()
 inline long double Molecule::get_kinetic_energy()
 {
 	long double k = 0;
-	k += px * px;
-	k += py * py;
-	k += pz * pz;
+	k += pow(px, 2);
+	k += pow(py, 2);
+	k += pow(pz, 2);
 	return k * 0.5;
 }
