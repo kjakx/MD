@@ -67,11 +67,6 @@ inline void System::set_temp(long double T)
 	this->T = T;
 }
 
-inline void System::set_num_of_mol(unsigned long int N)
-{
-	this->N = N;
-}
-
 inline vector<Molecule>& System::get_molecules()
 {
 	return molecules;
@@ -104,6 +99,15 @@ inline long double System::get_potential_energy()
 		}
 	}
 	return U;
+}
+
+inline long double System::get_energy()
+{
+	long double K, U, E;
+	K = get_kinetic_energy();
+	U = get_potential_energy();
+	E = K + U;
+	return E;
 }
 
 inline long double System::get_temp()
