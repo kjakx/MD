@@ -18,6 +18,7 @@ public:
 	// getter
 	tuple<double, double, double> get_q();
 	tuple<double, double, double> get_p();
+	long double get_kinetic_energy();
 }
 
 inline void Molecule::set_q(double qx, double qy, double qz)
@@ -36,10 +37,20 @@ inline void Molecule::set_p(double px, double py, double pz)
 
 inline tuple<double, double, double> Molecule::get_q()
 {
+	// Since it would like to be wrote in a line, used tuple.
 	return forward_as_tuple(qx, qy, qz);
 }
 
 inline tuple<double, double, double> Molecule::get_p()
 {
 	return forward_as_tuple(px, py, pz);
+}
+
+inline long double Molecule::get_kinetic_energy()
+{
+	long double k = 0;
+	k += px * px;
+	k += py * py;
+	k += pz * pz;
+	return k;
 }
