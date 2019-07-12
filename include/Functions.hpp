@@ -15,6 +15,7 @@ inline long double LJ_potential(Molecule mi, Molecule mj)
 	dy = mj.qy - mi.qy;
 	dz = mj.qz - mi.qz;
 	r2 = dx * dx + dy * dy + dz * dz;
+	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = r2 * r2 * r2; 
 	r12 = r6 * r6;
