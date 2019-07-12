@@ -37,7 +37,7 @@ inline void Molecule::set_p(double px, double py, double pz)
 
 inline tuple<double, double, double> Molecule::get_q()
 {
-	// Since it would like to be wrote in a line, used tuple.
+	// Since I would like to write in a line, I used tuple.
 	return forward_as_tuple(qx, qy, qz);
 }
 
@@ -52,5 +52,5 @@ inline long double Molecule::get_kinetic_energy()
 	k += px * px;
 	k += py * py;
 	k += pz * pz;
-	return k;
+	return k * 0.5;
 }
