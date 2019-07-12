@@ -12,6 +12,7 @@ private:
 	long double E = 0;
 	long double T = 0;
 	//unsigned long int N;
+	long double _LJ_potential(unsigned long int i, unsigned long int j);
 public:
 	System();
 	~System();
@@ -44,6 +45,23 @@ inline ~System()
 {
 	
 }	
+
+inline lond double System::_LJ_potential(unsigned long int i, unsigned long int j)
+{
+	double dx, dy, dz;
+	long double r2, r6, r12, u;
+	// distance between i-j
+	dx = molecules[j].qx - molecules[i].qx;
+	dy = molecules[j].qy - molecules[i].qy;
+	dz = molecules[j].qz - molecules[i].qz;
+	r2 = dx * dx + dy * dy + dz * dz;
+	//if (r2 > cutoff_distance^2) return 0;
+	r6 = r2 * r2 * r2; 
+	r12 = r6 * r6;
+	// LJ potential (sigma and epsilon = 1.0 for simplicity.)
+	u = 4.0 * (1.0 / r12 - 1.0 / r6);
+	return u;
+}
 
 inline void System::set_molecule(double qx, double qy, double qz,
 				 double px, double py, double pz);
@@ -84,39 +102,26 @@ inline Molecule System::get_molecule(unsigned long int id)
 
 inline long double System::get_kinetic_energy()
 {
-	long double k = 0;
+	long double K = 0;
 	for (Molecule &m : molecules)
 	{
-		k += m.get_kinetic_energy();
+		K += m.get_kinetic_energy();
 	}
-	return k;
+	return K;
 }
 	
 inline long double System::get_potential_energy()
 {
-	vector<Molecule> ms = get_molecules();
-	double dx, dy, dz, df;
-	long double df r2, r6, r12;
-	for (int i = 0; i < ms.size() - 1; i++)
+	long double U = 0;
+	for (int i = 0; i < molecules.size() - 1; i++)
 	{
-		for (int j = i + 1; j < ms.size(); j++)
+		for (int j = i + 1; j < molecules.size(); j++)
 		{
-			// distance between i-j
-			dx = ms[j].qx - ms[i].qx;
-			dy = ms[j].qy - ms[i].qy;
-			dz = ms[j].qz - ms[i].qz;
-			//adjust_pos(dx, dy, dz);
-			
-			r2 = dx * dx + dy * dy + dz * dz;
-			//if (r2 > cutoff_distance^2) continue;
-			r6 = r2 * r2 * r2; 
-			r12 = r6 * r6;
-			// calculate LJ potential
-			df = calculate_force(r2);
-			
+			// calculate LJ potential between i-j
+			U += _LJ_potential(i, j);
 		}
 	}
-	return u;
+	return U;
 }
 
 inline long double System::get_temp()
