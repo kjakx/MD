@@ -7,17 +7,18 @@ using namespace std;
 
 class Molecule
 {
-private:
+public:
+//private:
 	double qx, qy, qz;
 	double px, py, pz;
-public:
+//public:
 	// setter
 	void set_q(double qx, double qy, double qz);
 	void set_p(double px, double py, double pz);
 
 	// getter
-	tuple<double, double, double> get_q();
-	tuple<double, double, double> get_p();
+	//tuple<double, double, double> get_q();
+	//tuple<double, double, double> get_p();
 	long double get_kinetic_energy();
 }
 
@@ -34,7 +35,7 @@ inline void Molecule::set_p(double px, double py, double pz)
 	this->py = py;
 	this->pz = pz;
 }
-
+/*
 inline tuple<double, double, double> Molecule::get_q()
 {
 	// Since I would like to write in a line, I used tuple.
@@ -45,7 +46,7 @@ inline tuple<double, double, double> Molecule::get_p()
 {
 	return forward_as_tuple(px, py, pz);
 }
-
+*/
 inline long double Molecule::get_kinetic_energy()
 {
 	long double k = 0;
