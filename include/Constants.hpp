@@ -2,6 +2,16 @@
 #define CONSTANTS_HPP
 
 #include <math>
+// define units of variables
+
+// set variables in real value
+
+// variables in units
+
+// initial temperature [K]
+const double T0 = 273.15;
+
+// Boltzmann constant [J/K
 
 const long double CUTOFF = 2.0;
 const long double CUTOFF_R2 = pow(CUTOFF, 2);
