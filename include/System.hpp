@@ -2,6 +2,7 @@
 #define SYSTEM_HPP
 
 #include <vector>
+#include <tuple>
 #include "Molecule.hpp"
 
 class System
@@ -19,6 +20,8 @@ public:
 	void set_num_of_mol(unsigned long int N);
 
 	// getter
+	vector<Molecule>& get_molecule();
+	Molecule get_molecule(unsigned long int id);
 	long double get_energy();
 	long double get_temp();
 	unsigned long int get_num_of_mol();
@@ -53,6 +56,14 @@ inline void System::set_num_of_mol(unsigned long int N)
 {
 	this->N = N;
 }
+
+inline vector<Molecule>& System::get_molecules()
+{
+	return this->molecules;
+
+inline Molecule System::get_molecule(unsigned long int id)
+{
+	return this->molecules[id];
 
 inline long double System::get_energy()
 {
