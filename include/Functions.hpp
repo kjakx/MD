@@ -2,12 +2,15 @@
 #define FUNCTIONS_HPP
 
 #include <math>
+#include <random>
+#include <vector>
 #include "Molecule.hpp"
 #include "Constants.hpp"
 
-long double LJ_potential(Molecule mi, Molecule mj);
+long double LJ_potential(Molecule& mi, Molecule& mj);
+void init_MB_velosity(Molecule& m);
 
-inline long double LJ_potential(Molecule mi, Molecule mj)
+inline long double LJ_potential(Molecule& mi, Molecule& mj)
 {
         double dx, dy, dz;
 	long double r2, r6, r12, u;
@@ -23,4 +26,17 @@ inline long double LJ_potential(Molecule mi, Molecule mj)
 	// LJ potential (sigma and epsilon = 1.0 for simplicity.)
 	u = 4.0 * (1.0 / r12 - 1.0 / r6) + U0;
 	return u;
+}
+
+inline void init_MB_velosity(Molecule& m)
+{
+	// Maxwell-Boltzmann distribution 
+	double sigma;
+	random_device seed_gen;
+	default_random_engine engine(seed_gen());
+	sigma = sqrt(KB * T0 / m.mass);
+	normal_distribution<> dist(0.0, sigma);
+	m.px = m.mass * dist(engine);
+	m.py = m.mass * dist(engine);
+	m.pz = m.mass * dist(engine);
 }
