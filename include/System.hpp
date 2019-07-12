@@ -13,6 +13,8 @@ private:
 	long double T = 0;
 	unsigned long int N;
 public:
+	System();
+	~System();
 	// setter
 	void set_molecule(double qx, double qy, double qz, 
 			  double px, double py, double pz);
@@ -24,6 +26,7 @@ public:
 	vector<Molecule>& get_molecules();
 	Molecule get_molecule(unsigned long int id);
 	long double get_kinetic_energy();
+	long double get_potential_energy();
 	long double get_energy();
 	long double get_temp();
 	unsigned long int get_num_of_mol();
@@ -31,6 +34,10 @@ public:
 	// utils
 	// to be continued...
 }
+
+inline System()
+{
+	
 
 inline void System::set_molecule(double qx, double qy, double qz,
 				 double px, double py, double pz);
@@ -61,31 +68,41 @@ inline void System::set_num_of_mol(unsigned long int N)
 
 inline vector<Molecule>& System::get_molecules()
 {
-	return this->molecules;
+	return molecules;
 }
 
 inline Molecule System::get_molecule(unsigned long int id)
 {
-	return this->molecules[id];
+	return molecules[id];
 }
 
-inline long double System::get_energy()
+inline long double System::get_kinetic_energy()
 {
 	long double k = 0;
-	for (Molecule m : molecules)
+	for (Molecule &m : molecules)
 	{
 		k += m.get_kinetic_energy();
 	}
-	this->E += k;
-	return this->E;
+	return k;
 }
+	
+inline long double System::get_potential_energy()
+{
+	vector<Molecule> ms = get_molecules();
+	for (int i = 0; i < ms.size() - 1; i++)
+	{
+		for (int j = i + 1; j < ms.size(); j++)
+		{
+			
+}
+	
 
 inline long double System::get_temp()
 {
-	retuen this->T;
+	retuen T;
 }
 
 inline unsigned long int System::get_num_of_mol()
 {
-	return this->N;
+	return molecules.size();
 }
