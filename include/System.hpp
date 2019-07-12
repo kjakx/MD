@@ -9,7 +9,8 @@ class System
 {
 private:
 	vector<Molecule> molecules;
-	long double E, T;
+	long double E = 0;
+	long double T = 0;
 	unsigned long int N;
 public:
 	// setter
@@ -20,8 +21,9 @@ public:
 	void set_num_of_mol(unsigned long int N);
 
 	// getter
-	vector<Molecule>& get_molecule();
+	vector<Molecule>& get_molecules();
 	Molecule get_molecule(unsigned long int id);
+	long double get_kinetic_energy();
 	long double get_energy();
 	long double get_temp();
 	unsigned long int get_num_of_mol();
@@ -60,13 +62,21 @@ inline void System::set_num_of_mol(unsigned long int N)
 inline vector<Molecule>& System::get_molecules()
 {
 	return this->molecules;
+}
 
 inline Molecule System::get_molecule(unsigned long int id)
 {
 	return this->molecules[id];
+}
 
 inline long double System::get_energy()
 {
+	long double k = 0;
+	for (Molecule m : molecules)
+	{
+		k += m.get_kinetic_energy();
+	}
+	this->E += k;
 	return this->E;
 }
 
