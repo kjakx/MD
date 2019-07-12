@@ -1,6 +1,7 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
+#include <math>
 #include "Molecule.hpp"
 #include "Constants.hpp"
 
@@ -14,11 +15,11 @@ inline long double LJ_potential(Molecule mi, Molecule mj)
 	dx = mj.qx - mi.qx;
 	dy = mj.qy - mi.qy;
 	dz = mj.qz - mi.qz;
-	r2 = dx * dx + dy * dy + dz * dz;
+	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
-	r6 = r2 * r2 * r2; 
-	r12 = r6 * r6;
+	r6 = pow(r2, 3); 
+	r12 = pow(r6, 2);
 	// LJ potential (sigma and epsilon = 1.0 for simplicity.)
 	u = 4.0 * (1.0 / r12 - 1.0 / r6) + U0;
 	return u;
