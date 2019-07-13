@@ -26,9 +26,9 @@ const double T0 = T0_R / u_T;			// initial temperature [K]
 //--
 
 //--- cutoff radius and potential U0
-const long double CUTOFF_R = 2.0;
-const long double CUTOFF_R2 = pow(CUTOFF_R, 2);
-const long double CUTOFF_R6 = pow(CUTOFF_R2, 3);
-const long double CUTOFF_R12 = pow(CUTOFF_R6, 2);
-const long double U0 = - 4 * (1.0 / CUTOFF_R12 - 1.0 / CUTOFF_R6);
+const double CUTOFF_R = 2.0;
+const double CUTOFF_R2 = pow(CUTOFF_R, 2);
+const double CUTOFF_R6 = pow(CUTOFF_R2, 3);
+const double CUTOFF_R12 = pow(CUTOFF_R6, 2);
+const double U0 = - 4 * (1.0 / CUTOFF_R12 - 1.0 / CUTOFF_R6);
 //---
