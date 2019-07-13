@@ -10,21 +10,19 @@ class System
 {
 private:
 	vector<Molecule> molecules;
-	long double E = 0;
-	long double T = 0;
+	unsigned long double t;
+	long double E;
+	long double T;
 public:
 	System();
 	~System();
 	// setter
-	void set_molecule(double qx, double qy, double qz, 
-			  double px, double py, double pz);
+	void set_molecule(double qx, double qy, double qz);
 	void set_energy(long double E);
 	void set_temp(long double T);
-	//void set_num_of_mol(unsigned long int N);
-
 	// getter
 	vector<Molecule>& get_molecules();
-	Molecule get_molecule(unsigned long int id);
+	//Molecule get_molecule(unsigned long int id);
 	long double get_kinetic_energy();
 	long double get_potential_energy();
 	long double get_energy();
@@ -37,22 +35,16 @@ public:
 
 inline System()
 {
-	
-}
-
-inline ~System()
-{
-	
+	this->T = T0;
 }	
 
-inline void System::set_molecule(double qx, double qy, double qz,
-				 double px, double py, double pz);
+inline void System::set_molecule(double qx, double qy, double qz);
 {	
 	// new molecule
 	Molecule m;
 	// coodinate and power
 	m.set_q(qx, qy, qz);
-	m.set_p(px, py, pz);
+	init_MB_verosity(m);
 	// add new molecule to System
 	molecules.push_back(m);
 }
@@ -71,12 +63,12 @@ inline vector<Molecule>& System::get_molecules()
 {
 	return molecules;
 }
-
+/*
 inline Molecule System::get_molecule(unsigned long int id)
 {
 	return molecules[id];
 }
-
+*/
 inline long double System::get_kinetic_energy()
 {
 	long double K = 0;
