@@ -34,7 +34,7 @@ inline void init_MB_velosity(Molecule& m)
 	double sigma;
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
-	sigma = sqrt(KB * T0 / m.mass);
+	sigma = sqrt(kB * T0 / m.mass);
 	normal_distribution<> dist(0.0, sigma);
 	m.px = m.mass * dist(engine);
 	m.py = m.mass * dist(engine);
