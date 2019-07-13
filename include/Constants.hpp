@@ -3,6 +3,10 @@
 
 #include <math>
 // define units of variables
+const double m0 = pow(1.000, -26); // mass [kg]
+const double kB = pow(1.38064852, -23); // Boltzmann constant [J/K]
+const double eV = pow(1.60217662, -19); // energy [J]
+const double d = pow(1.000, -10); // distance [m]
 
 // set variables in real value
 
