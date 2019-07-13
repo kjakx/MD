@@ -4,16 +4,17 @@
 #include <math>
 
 //--- define units of variables
-const double d = pow(1.000, -10);		// distance [m]
-const double m0 = pow(1.000, -26);		// mass [kg]
 const double kB = pow(1.380649, -23);    	// Boltzmann constant [J/K]
-const double eV = pow(1.602176634, -19);	// energy [J]
-const double u_t = d * sqrt(m0 / eV);		// time [s]
-const double u_v = sqrt(eV / m0);		// velosity [m/s]
-const double u_f = ev / d;			// force [kg(m/s2)]
-const double u_a = ev / (d * m0);		// acceleration [m/s2]
+const double eV = pow(1.602176634, -19);	// elementary charge [J]
+const double u_d = pow(1.000, -10);		// distance [m]
+const double u_m = pow(1.000, -26);		// mass [kg]
+const double u_t = u_d * sqrt(u_m / eV);	// time [s]
+const double u_v = sqrt(eV / u_m);		// velosity [m/s]
+const double u_f = eV / u_d;			// force [kg(m/s2)]
+const double u_a = eV / (u_d * u_m);		// acceleration [m/s2]
 const double u_T = eV / kB;			// temperature [K]
-const double u_P = ev / pow(d, 3);		// pressure [kg/(ms2)]
+const double u_P = eV / pow(u_d, 3);		// pressure [kg/(ms2)]
+const double u_U = eV;                          // energy [J]
 //---
 
 //--- variables in real value
