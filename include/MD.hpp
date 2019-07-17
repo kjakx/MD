@@ -18,7 +18,7 @@ private:
 	void calculate_force();
 	void update_position();
 public:
-	MD(istream& istr);
+	MD();
 	~MD();
 	void run();
 }
