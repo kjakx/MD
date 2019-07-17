@@ -13,6 +13,7 @@ private:
 	unsigned long double t;
 	long double E;
 	long double T;
+	double time;
 public:
 	System();
 	~System();
@@ -30,22 +31,20 @@ public:
 	unsigned long int get_num_of_mol();
 
 	// utils
-	// to be continued...
+	void next_time();
 }
 
 inline System()
 {
 	this->T = T0;
+	this->time = 0;
 }	
 
 inline void System::set_molecule(double qx, double qy, double qz);
 {	
-	// new molecule
 	Molecule m;
-	// coodinate and power
 	m.set_q(qx, qy, qz);
 	init_MB_verosity(m);
-	// add new molecule to System
 	molecules.push_back(m);
 }
 
@@ -110,4 +109,9 @@ inline long double System::get_temp()
 inline unsigned long int System::get_num_of_mol()
 {
 	return molecules.size();
+}
+
+inline void next_time()
+{
+	time += dt;
 }
