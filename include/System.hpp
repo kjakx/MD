@@ -32,6 +32,7 @@ public:
 
 	// utils
 	void next_time();
+	void update();
 }
 
 inline System()
@@ -44,7 +45,7 @@ inline void System::set_molecule(double qx, double qy, double qz);
 {	
 	Molecule m;
 	m.set_q(qx, qy, qz);
-	init_MB_verosity(m);
+	init_MB_verocity(m);
 	molecules.push_back(m);
 }
 
@@ -115,3 +116,7 @@ inline void next_time()
 {
 	time += dt;
 }
+
+inline void update()
+{
+	// velocity Verlet
