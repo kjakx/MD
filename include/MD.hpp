@@ -1,8 +1,11 @@
 #ifndef MD_HPP
 #define MD_HPP
 
+#include <string>
 #include <fstream>
+#include <iostream>
 #include "System.hpp"
+#include "Constant.hpp"
 
 using namespace std;
 
@@ -10,37 +13,48 @@ class MD
 {
 private:
 	System sys;
+	void config_molecules(istream& istr);
+	void update_position();
+	void calculate_force();
+	void update_position();
 public:
-	MD();
+	MD(istream& istr);
 	~MD();
-	init();
-	run();
+	void run();
+}
+
+inline void MD::config_molecules(istream& istr)
+{
+	while (true)
+	{
+		istr >> qx >> qy >> qz;
+		if (istr.eof()) break;
+		sys.set_molecule(qx, qy, qz);
+	}
+}
+
+inline void MD::update_position()
+{
 	
-	config_molecules();
+}
+
+inline void MD::calculate_force()
+{
+	
 }
 
 inline MD()
 {
 	sys = System();
-	// input file stream
-	ifstream fin("input.dat");
+	config_molecules(cin);
+}
 
-	// output file stream
-	ofstream fout("output.dat"); 
+inline ~MD()
+{
+	delete sys;
+}
 
-	// file open error handling
-	if(fin.fail())
-	{
-		cout << "cannot open input file" << endl;
-    		return 1;
-	}
-	if(fout.fail())
-	{
-		cout << "cannot open output file" << endl;
-		return 1;
-	}
-
-	while((fin >> qx >> qy >> qz)!=0)
-	{
-		sys.set_molecule(qx, qy, qz);
-	}
+inline void MD::run()
+{
+	
+}
