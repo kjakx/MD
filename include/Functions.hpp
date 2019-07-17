@@ -8,7 +8,7 @@
 #include "Constants.hpp"
 
 long double LJ_potential(Molecule& mi, Molecule& mj);
-void init_MB_velosity(Molecule& m);
+void init_MB_velocity(Molecule& m);
 
 inline long double LJ_potential(Molecule& mi, Molecule& mj)
 {
@@ -23,12 +23,12 @@ inline long double LJ_potential(Molecule& mi, Molecule& mj)
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
 	r12 = pow(r6, 2);
-	// LJ potential (sigma and epsilon = 1.0 for simplicity.)
+	// LJ potential
 	u = 4.0 * (1.0 / r12 - 1.0 / r6) + U0;
 	return u;
 }
 
-inline void init_MB_velosity(Molecule& m)
+inline void init_MB_velocity(Molecule& m)
 {
 	// Maxwell-Boltzmann distribution 
 	double sigma;
