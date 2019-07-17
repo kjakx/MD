@@ -20,11 +20,13 @@ const unsigned double u_U = eV;				// energy [J]
 //--- variables in real value
 const unsigned double T0_R = 273.15;			// initial temperature [K]
 const unsigned double m0_R = u_m;			// mass of molecule [kg]
+const unsigned double dt_R = 0.05;			// calculation time step [s]
 //---
 
 //--- variables in dimensionless
 const unsigned double T0 = T0_R / u_T;			// initial temperature [-]
 const unsigned double m0 = m0_R / u_m;			// mass of molecule [-]
+const unsigned double dt = dt_R / u_t;			// calculation time step [-]
 //---
 
 //--- cutoff radius and potential U0
