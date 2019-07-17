@@ -31,7 +31,7 @@ inline Molecule(double qx, double qy, double qz)
 {
 	mass = m0 / u_m;
 	set_q(qx, qy, qz);
-	init_MB_verosity(this);
+	init_MB_velocity(this);
 }
 
 inline void Molecule::set_q(double qx, double qy, double qz)
