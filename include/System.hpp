@@ -112,11 +112,12 @@ inline unsigned long int System::get_num_of_mol()
 	return molecules.size();
 }
 
-inline void next_time()
+inline void System::next_time()
 {
 	time += dt;
 }
 
-inline void update()
+inline void System::update()
 {
 	// velocity Verlet
+	
