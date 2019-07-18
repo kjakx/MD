@@ -32,7 +32,7 @@ public:
 	// functions
 	void next_time();
 	void update();
-	void calculate_force();
+	long double calculate_force();
 }
 
 inline System()
@@ -120,19 +120,36 @@ inline void System::next_time()
 inline void System::update()
 {
 	// velocity Verlet
-	
-}
-
-inline void System::calculate_force()
-{
-	long double U = 0;
+	// 1. calculate velocity with t.
 	for (int i = 0; i < molecules.size() - 1; i++)
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
 			// calculate LJ potential between i-j
-			U += d_LJ_potential(molecules[i], molecules[j]);
+			calculate_force(molecules[i], molecules[j]);
 		}
 	}
-	return U;
+	// 2. update position on t + dt.
+	// 3. calculate force on t + dt.
+	// 4. update velocity on t + dt.
 }
+
+inline long double System::calculate_force(molecules[i], molecules[j])
+{
+        double dx, dy, dz, df;
+	long double r2, r6, r12, r13;
+	// distance between i-j
+	dx = mj.qx - mi.qx;
+	dy = mj.qy - mi.qy;
+	dz = mj.qz - mi.qz;
+	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
+	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
+	if (r2 > CUTOFF_R2) return 0;
+	r6 = pow(r2, 3);
+	r12 = pow(r6, 2);
+	r13 = pow(r2, 6.5);
+	// calculate force between i-j with derivative of LJ potential
+	df = (24 * r6 - 48) / r13;
+	return df;
+}
+	
