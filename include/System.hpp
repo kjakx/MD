@@ -29,10 +29,10 @@ public:
 	long double get_energy();
 	long double get_temp();
 	unsigned long int get_num_of_mol();
-
-	// utils
+	// functions
 	void next_time();
 	void update();
+	void calculate_force();
 }
 
 inline System()
@@ -121,3 +121,18 @@ inline void System::update()
 {
 	// velocity Verlet
 	
+}
+
+inline void System::calculate_force()
+{
+	long double U = 0;
+	for (int i = 0; i < molecules.size() - 1; i++)
+	{
+		for (int j = i + 1; j < molecules.size(); j++)
+		{
+			// calculate LJ potential between i-j
+			U += d_LJ_potential(molecules[i], molecules[j]);
+		}
+	}
+	return U;
+}
