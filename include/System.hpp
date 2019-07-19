@@ -11,9 +11,8 @@ class System
 {
 private:
 	vector<Molecule> molecules;
-	unsigned long double t;
-	//long double E;
-	long double T;
+	//double E;
+	//double T;
 	double time;
 	void update_position();
 	void update_velocity();
@@ -27,16 +26,14 @@ public:
 	void set_temp(long double T);
 	// getter
 	vector<Molecule>& get_molecules();
-	//Molecule get_molecule(unsigned long int id);
-	long double get_kinetic_energy();
-	long double get_potential_energy();
-	long double get_energy();
-	long double get_temp();
+	double get_kinetic_energy();
+	double get_potential_energy();
+	double get_energy();
+	double get_temp();
 	unsigned long int get_num_of_mol();
 	// functions
 	void tick();
 	void update();
-
 }
 
 inline void System::update_position()
@@ -51,19 +48,19 @@ inline void System::update_position()
 
 inline void System::update_velocity()
 {
-	double dfx, dfy, dfz;
+	double fx, fy, fz;
 	for (int i = 0; i < molecules.size() - 1; i++)
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
 			// calculate force between i-j
-			tie(dfx, dfy, dfz) = calculate_force(molecules[i], molecules[j]);
-			molecules[i].px += dfx * dt * 0.5;
-			molecules[i].py += dfy * dt * 0.5;
-			molecules[i].pz += dfz * dt * 0.5;
-			molecules[j].px -= dfx * dt * 0.5;
-			molecules[j].py -= dfy * dt * 0.5;
-			molecules[j].pz -= dfz * dt * 0.5;
+			tie(fx, fy, fz) = calculate_force(molecules[i], molecules[j]);
+			molecules[i].px += fx * dt * 0.5;
+			molecules[i].py += fy * dt * 0.5;
+			molecules[i].pz += fz * dt * 0.5;
+			molecules[j].px -= fx * dt * 0.5;
+			molecules[j].py -= fy * dt * 0.5;
+			molecules[j].pz -= fz * dt * 0.5;
 		}
 	}
 }
@@ -74,10 +71,17 @@ inline System()
 	this->time = 0;
 }	
 
+inline ~System()
+{
+	delete molecules;
+}
+
 inline void System::set_molecule(double qx, double qy, double qz);
 {	
 	Molecule m;
-	m.set_q(qx, qy, qz);
+	m.qx = qx;
+	m.qy = qy;
+	m.qz = qz;
 	init_MB_verocity(m);
 	molecules.push_back(m);
 }
@@ -86,25 +90,20 @@ inline void System::set_energy(long double E)
 {
 	this->E = E;
 }
-*/
+
 inline void System::set_temp(long double T)
 {
 	this->T = T;
 }
-
+*/
 inline vector<Molecule>& System::get_molecules()
 {
 	return molecules;
 }
-/*
-inline Molecule System::get_molecule(unsigned long int id)
+
+inline double System::get_kinetic_energy()
 {
-	return molecules[id];
-}
-*/
-inline long double System::get_kinetic_energy()
-{
-	long double K = 0;
+	double K = 0;
 	for (Molecule &m : molecules)
 	{
 		// sum up kinetic energies of all molecules.
@@ -113,9 +112,9 @@ inline long double System::get_kinetic_energy()
 	return K;
 }
 	
-inline long double System::get_potential_energy()
+inline double System::get_potential_energy()
 {
-	long double U = 0;
+	double U = 0;
 	for (int i = 0; i < molecules.size() - 1; i++)
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
@@ -127,16 +126,16 @@ inline long double System::get_potential_energy()
 	return U;
 }
 
-inline long double System::get_energy()
+inline double System::get_energy()
 {
-	long double K, U, E;
+	double K, U, E;
 	K = get_kinetic_energy();
 	U = get_potential_energy();
 	E = K + U;
 	return E;
 }
 
-inline long double System::get_temp()
+inline double System::get_temp()
 {
 	retuen T;
 }
@@ -164,8 +163,9 @@ inline void System::update()
 
 inline tuple<double, double, double> System::calculate_force(molecules[i], molecules[j])
 {
-        double rx, ry, rz, dfx, dfy, dfz;
-	long double r2, r6, r12, r14;
+        double rx, ry, rz;
+	double f, fx, fy, fz;
+	double r2, r6, r14;
 	// distance between i-j
 	rx = mj.qx - mi.qx;
 	ry = mj.qy - mi.qy;
@@ -173,19 +173,18 @@ inline tuple<double, double, double> System::calculate_force(molecules[i], molec
 	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
-	r6 = pow(r2, 3);
-	r12 = pow(r6, 2);
-	r14 = r12 * r2;
+	r6 = pow(r2, 3);	
+	r14 = r6 * r6 * r2;
 	// calculate force between i-j with derivative of LJ potential
-	/* ---memo
-	本来はLJ potential の微分 df = (24 * r6 - 48) / r13 とすべき所だが、
-	df はそのまま使うわけではなく、続くx,y,z成分の計算で、
-	dfx = df * rx / r などとして各成分の単位ベクトルを掛けて分解するので、
-	先にr14で割ってrxを掛ける、という計算でも問題ないと理解。
-	end memo--- */
-	df = (24 * r6 - 48) / r14;
-	dfx = df * rx;
-	dfy = df * ry;
-	dfz = df * rz;
-	return forward_as_tuple(dfx, dfy, dfz);
+	/*--- memo
+		本来はLJ potential の微分 f = (24 * r6 - 48) / r13 とすべき所だが、
+		f はそのまま使うわけではなく、続くx,y,z成分の計算で、
+		fx = f * rx / r などとして各成分の単位ベクトルを掛けて分解するので、
+		先にr14で割ってrxを掛ける、という順序でも問題ないと理解。
+	end memo ---*/
+	f = (24 * r6 - 48) / r14;
+	fx = f * rx;
+	fy = f * ry;
+	fz = f * rz;
+	return forward_as_tuple(fx, fy, fz);
 }
