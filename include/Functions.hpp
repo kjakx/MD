@@ -7,13 +7,13 @@
 #include "Molecule.hpp"
 #include "Constants.hpp"
 
-long double LJ_potential(Molecule& mi, Molecule& mj);
+double LJ_potential(Molecule& mi, Molecule& mj);
 void init_MB_velocity(Molecule& m);
 
-inline long double LJ_potential(Molecule& mi, Molecule& mj)
+inline double LJ_potential(Molecule& mi, Molecule& mj)
 {
         double dx, dy, dz;
-	long double r2, r6, r12, u;
+	double r2, r6, r12, u;
 	// distance between i-j
 	dx = mj.qx - mi.qx;
 	dy = mj.qy - mi.qy;
