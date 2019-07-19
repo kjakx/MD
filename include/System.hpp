@@ -12,15 +12,18 @@ class System
 private:
 	vector<Molecule> molecules;
 	unsigned long double t;
-	long double E;
+	//long double E;
 	long double T;
 	double time;
+	void update_position();
+	void update_velocity();
+	tuple<double, double, double> calculate_force();
 public:
 	System();
 	~System();
 	// setter
 	void set_molecule(double qx, double qy, double qz);
-	void set_energy(long double E);
+	//void set_energy(long double E);
 	void set_temp(long double T);
 	// getter
 	vector<Molecule>& get_molecules();
@@ -31,9 +34,38 @@ public:
 	long double get_temp();
 	unsigned long int get_num_of_mol();
 	// functions
-	void next_time();
+	void tick();
 	void update();
-	tuple<double, double, double> calculate_force();
+
+}
+
+inline void System::update_position()
+{
+	for (Molecule &m : molecules)
+	{
+		m.qx += m.px * dt;
+		m.qy += m.py * dt;
+		m.qz += m.pz * dt;
+	}
+}
+
+inline void System::update_velocity()
+{
+	double dfx, dfy, dfz;
+	for (int i = 0; i < molecules.size() - 1; i++)
+	{
+		for (int j = i + 1; j < molecules.size(); j++)
+		{
+			// calculate force between i-j
+			tie(dfx, dfy, dfz) = calculate_force(molecules[i], molecules[j]);
+			molecules[i].px += dfx * dt * 0.5;
+			molecules[i].py += dfy * dt * 0.5;
+			molecules[i].pz += dfz * dt * 0.5;
+			molecules[j].px -= dfx * dt * 0.5;
+			molecules[j].py -= dfy * dt * 0.5;
+			molecules[j].pz -= dfz * dt * 0.5;
+		}
+	}
 }
 
 inline System()
@@ -49,12 +81,12 @@ inline void System::set_molecule(double qx, double qy, double qz);
 	init_MB_verocity(m);
 	molecules.push_back(m);
 }
-
+/*
 inline void System::set_energy(long double E)
 {
 	this->E = E;
 }
-
+*/
 inline void System::set_temp(long double T)
 {
 	this->T = T;
@@ -75,6 +107,7 @@ inline long double System::get_kinetic_energy()
 	long double K = 0;
 	for (Molecule &m : molecules)
 	{
+		// sum up kinetic energies of all molecules.
 		K += m.get_kinetic_energy();
 	}
 	return K;
@@ -113,7 +146,7 @@ inline unsigned long int System::get_num_of_mol()
 	return molecules.size();
 }
 
-inline void System::next_time()
+inline void System::tick()
 {
 	time += dt;
 }
@@ -121,25 +154,12 @@ inline void System::next_time()
 inline void System::update()
 {
 	// velocity Verlet integration
-	// 1. calculate velocity with t.
-	double dfx, dfy, dfz;
-	for (int i = 0; i < molecules.size() - 1; i++)
-	{
-		for (int j = i + 1; j < molecules.size(); j++)
-		{
-			// calculate force between i-j
-			tie(dfx, dfy, dfz) = calculate_force(molecules[i], molecules[j]);
-			molecules[i].px += dfx * dt * 0.5;
-			molecules[i].py += dfy * dt * 0.5;
-			molecules[i].pz += dfz * dt * 0.5;
-			molecules[j].px -= dfx * dt * 0.5;
-			molecules[j].py -= dfy * dt * 0.5;
-			molecules[j].pz -= dfz * dt * 0.5;
-		}
-	}
+	// 1. update(1) velocity on t + dt.
+	update_velocity();
 	// 2. update position on t + dt.
-	// 3. calculate force on t + dt.
-	// 4. update velocity on t + dt.
+	update_position();
+	// 3. update(2) velocity on t + dt.
+	update_velocity();
 }
 
 inline tuple<double, double, double> System::calculate_force(molecules[i], molecules[j])
