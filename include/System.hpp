@@ -1,11 +1,16 @@
 #ifndef	SYSTEM_HPP
 #define SYSTEM_HPP
 
+#include <cmath>
 #include <tuple>
 #include <vector>
 #include "Molecule.hpp"
 #include "Functions.hpp"
 #include "Constants.hpp"
+
+#endif
+
+using namespace std;
 
 class System
 {
@@ -16,20 +21,20 @@ private:
 	double time;
 	void update_position();
 	void update_velocity();
-	tuple<double, double, double> calculate_force();
+	tuple<double, double, double> calculate_force(Molecule mi, Molecule mj);
 public:
 	System();
 	~System();
 	// setter
 	void set_molecule(double qx, double qy, double qz);
 	//void set_energy(long double E);
-	void set_temp(long double T);
+	//void set_temp(long double T);
 	// getter
-	vector<Molecule>& get_molecules();
+	//vector<Molecule>& get_molecules();
 	double get_kinetic_energy();
 	double get_potential_energy();
 	double get_energy();
-	double get_temp();
+	double get_time();
 	unsigned long int get_num_of_mol();
 	// functions
 	void tick();
@@ -43,7 +48,10 @@ inline void System::update_position()
 		m.qx += m.px * dt;
 		m.qy += m.py * dt;
 		m.qz += m.pz * dt;
+		// periodic boundary condition
+		correct_position(m.qx, m.qy, m.qz);
 	}
+	
 }
 
 inline void System::update_velocity()
@@ -67,8 +75,7 @@ inline void System::update_velocity()
 
 inline System()
 {
-	this->T = T0;
-	this->time = 0;
+	time = 0;
 }	
 
 inline ~System()
@@ -95,12 +102,12 @@ inline void System::set_temp(long double T)
 {
 	this->T = T;
 }
-*/
+
 inline vector<Molecule>& System::get_molecules()
 {
 	return molecules;
 }
-
+*/
 inline double System::get_kinetic_energy()
 {
 	double K = 0;
@@ -135,9 +142,9 @@ inline double System::get_energy()
 	return E;
 }
 
-inline double System::get_temp()
+inline double System::get_time()
 {
-	retuen T;
+	retuen time;
 }
 
 inline unsigned long int System::get_num_of_mol()
@@ -161,15 +168,17 @@ inline void System::update()
 	update_velocity();
 }
 
-inline tuple<double, double, double> System::calculate_force(molecules[i], molecules[j])
+inline tuple<double, double, double> System::calculate_force(Molecule mi, Molecule mj)
 {
         double rx, ry, rz;
-	double f, fx, fy, fz;
 	double r2, r6, r14;
+	double f, fx, fy, fz;
 	// distance between i-j
 	rx = mj.qx - mi.qx;
 	ry = mj.qy - mi.qy;
 	rz = mj.qz - mi.qz;
+	// periodic boundary condition
+	correct_distance(rx, ry, rz);
 	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
