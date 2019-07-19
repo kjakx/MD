@@ -1,6 +1,7 @@
 #ifndef	SYSTEM_HPP
 #define SYSTEM_HPP
 
+#include <tuple>
 #include <vector>
 #include "Molecule.hpp"
 #include "Functions.hpp"
@@ -32,7 +33,7 @@ public:
 	// functions
 	void next_time();
 	void update();
-	long double calculate_force();
+	tuple<double, double, double> calculate_force();
 }
 
 inline System()
@@ -119,14 +120,21 @@ inline void System::next_time()
 
 inline void System::update()
 {
-	// velocity Verlet
+	// velocity Verlet integration
 	// 1. calculate velocity with t.
+	double dfx, dfy, dfz;
 	for (int i = 0; i < molecules.size() - 1; i++)
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
-			// calculate LJ potential between i-j
-			calculate_force(molecules[i], molecules[j]);
+			// calculate force between i-j
+			tie(dfx, dfy, dfz) = calculate_force(molecules[i], molecules[j]);
+			molecules[i].px += dfx * dt * 0.5;
+			molecules[i].py += dfy * dt * 0.5;
+			molecules[i].pz += dfz * dt * 0.5;
+			molecules[j].px -= dfx * dt * 0.5;
+			molecules[j].py -= dfy * dt * 0.5;
+			molecules[j].pz -= dfz * dt * 0.5;
 		}
 	}
 	// 2. update position on t + dt.
@@ -134,22 +142,30 @@ inline void System::update()
 	// 4. update velocity on t + dt.
 }
 
-inline long double System::calculate_force(molecules[i], molecules[j])
+inline tuple<double, double, double> System::calculate_force(molecules[i], molecules[j])
 {
-        double dx, dy, dz, df;
-	long double r2, r6, r12, r13;
+        double rx, ry, rz, dfx, dfy, dfz;
+	long double r2, r6, r12, r14;
 	// distance between i-j
-	dx = mj.qx - mi.qx;
-	dy = mj.qy - mi.qy;
-	dz = mj.qz - mi.qz;
-	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
+	rx = mj.qx - mi.qx;
+	ry = mj.qy - mi.qy;
+	rz = mj.qz - mi.qz;
+	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3);
 	r12 = pow(r6, 2);
-	r13 = pow(r2, 6.5);
+	r14 = r12 * r2;
 	// calculate force between i-j with derivative of LJ potential
-	df = (24 * r6 - 48) / r13;
-	return df;
+	/* ---memo
+	本来はLJ potential の微分 df = (24 * r6 - 48) / r13 とすべき所だが、
+	df はそのまま使うわけではなく、続くx,y,z成分の計算で、
+	dfx = df * rx / r などとして各成分の単位ベクトルを掛けて分解するので、
+	先にr14で割ってrxを掛ける、という計算でも問題ないと理解。
+	end memo--- */
+	df = (24 * r6 - 48) / r14;
+	dfx = df * rx;
+	dfy = df * ry;
+	dfz = df * rz;
+	return forward_as_tuple(dfx, dfy, dfz);
 }
-	
