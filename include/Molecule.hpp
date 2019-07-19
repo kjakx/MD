@@ -5,6 +5,8 @@
 //#include <tuple>
 #include "Constant.hpp"
 
+#endif
+
 using namespace std;
 
 class Molecule
