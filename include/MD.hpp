@@ -1,6 +1,9 @@
 #ifndef MD_HPP
 #define MD_HPP
 
+#define STEPS 10000
+#define SAMPLES 100
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -14,9 +17,7 @@ class MD
 private:
 	System sys;
 	void config_molecules(istream& istr);
-	void update_position();
-	void calculate_force();
-	void update_position();
+	void calculate();
 public:
 	MD();
 	~MD();
@@ -33,14 +34,10 @@ inline void MD::config_molecules(istream& istr)
 	}
 }
 
-inline void MD::update_position()
+inline MD::calculate();
 {
-	
-}
-
-inline void MD::calculate_force()
-{
-	
+	sys.update();
+	sys.tick();
 }
 
 inline MD()
