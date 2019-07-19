@@ -5,9 +5,9 @@
 #include <iostream>
 
 //--- define units of variables
-const double kB = pow(1.380649, -23);  	// Boltzmann constant [J/K]
+const double kB = pow(1.380649, -23);		// Boltzmann constant [J/K]
 const double eV = pow(1.602176634, -19);	// elementary charge [J]
-const double u_d = pow(1.000, -10);    	// distance [m]
+const double u_d = pow(1.000, -10);		// distance [m]
 const double u_m = pow(1.000, -26);		// mass [kg]
 const double u_t = u_d * sqrt(u_m / eV);	// time [s]
 const double u_v = sqrt(eV / u_m);		// velocity [m/s]
