@@ -1,8 +1,8 @@
 #ifndef MOLECULE_HPP
 #define MOLECULE_HPP
 
-#include <math>
-#include <tuple>
+#include <cmath>
+//#include <tuple>
 #include "Constant.hpp"
 
 using namespace std;
@@ -10,16 +10,16 @@ using namespace std;
 class Molecule
 {
 public:
-//property:
+// property:
 	double mass;
 	double qx, qy, qz;
 	double px, py, pz;
-//method:
+// method:
 	Molecule(double qx, double qy, double qz);
 	~Molecule();
 	// setter
-	void set_q(double qx, double qy, double qz);
-	void set_p(double px, double py, double pz);
+	//void set_q(double qx, double qy, double qz);
+	//void set_p(double px, double py, double pz);
 
 	// getter
 	//tuple<double, double, double> get_q();
@@ -30,10 +30,12 @@ public:
 inline Molecule(double qx, double qy, double qz)
 {
 	mass = m0 / u_m;
-	set_q(qx, qy, qz);
+	this->qx = qx;
+	this->qy = qy;
+	this->qz = qz;
 	init_MB_velocity(this);
 }
-
+/*
 inline void Molecule::set_q(double qx, double qy, double qz)
 {
 	this->qx = qx;
@@ -47,7 +49,6 @@ inline void Molecule::set_p(double px, double py, double pz)
 	this->py = py;
 	this->pz = pz;
 }
-/*
 inline tuple<double, double, double> Molecule::get_q()
 {
 	// Since I would like to write in a line, I used tuple.
