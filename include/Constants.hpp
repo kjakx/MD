@@ -1,8 +1,12 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-#include <math>
+#include <cmath>
 #include <iostream>
+
+#endif
+
+using namespace std;
 
 //--- define units of variables
 const double kB = pow(1.380649, -23);		// Boltzmann constant [J/K]
