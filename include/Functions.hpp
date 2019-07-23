@@ -1,11 +1,13 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
-#include <math>
+#include <cmath>
 #include <random>
 #include <vector>
 #include "Molecule.hpp"
 #include "Constants.hpp"
+
+#endif
 
 double LJ_potential(Molecule& mi, Molecule& mj);
 void init_MB_velocity(Molecule& m);
@@ -22,7 +24,7 @@ inline double LJ_potential(Molecule& mi, Molecule& mj)
 	dz = mj.qz - mi.qz;
 	correct_distance(dx, dy, dz);
 	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
-	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
+	// the force between mi and mj will be ignored (= 0) if r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
 	r12 = pow(r6, 2);
@@ -33,7 +35,7 @@ inline double LJ_potential(Molecule& mi, Molecule& mj)
 
 inline void init_MB_velocity(Molecule& m)
 {
-	// Maxwell-Boltzmann distribution 
+	// Maxwell-Boltzmann distribution
 	double sigma;
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
