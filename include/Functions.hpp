@@ -2,6 +2,7 @@
 #define FUNCTIONS_HPP
 
 #include <cmath>
+#include <tuple>
 #include <random>
 #include <vector>
 #include "Molecule.hpp"
@@ -11,8 +12,10 @@
 
 using namespace std;
 
-double LJ_potential(Molecule& mi, Molecule& mj);
+double LJ_potential_between(Molecule& mi, Molecule& mj);
 double r2_between(Molecule& mi, Molecule& mj);
+tuple<double, double, double> r_xyz_between(Molecule& mi, Molecule& mj);
+double VDW_forces_between(Molecule& mi, Molecule& mj);
 void init_MB_velocity(Molecule& m);
 void correct_distance(double &dx, double &dy, double &dz);
 void correct_position(double &qx, double &qy, double &qz);
@@ -31,7 +34,7 @@ inline double LJ_potential(Molecule& mi, Molecule& mj)
 	return u;
 }
 
-inline r2_between(Molecule& mi, Molecule& mj)
+inline double r2_between(Molecule& mi, Molecule& mj)
 {
 	double dx, dy, dz;
 	dx = mj.qx - mi.qx;
@@ -40,6 +43,38 @@ inline r2_between(Molecule& mi, Molecule& mj)
 	correct_distance(dx, dy, dz);
 	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
 	return r2;
+}
+
+inline tuple<double, double, double> r_xyz_between(Molecule& mi, Molecule& mj)
+{
+	double rx, ry, rz;
+	// components of distance between i-j
+	rx = mj.qx - mi.qx;
+	ry = mj.qy - mi.qy;
+	rz = mj.qz - mi.qz;
+	// periodic boundary condition
+	correct_distance(rx, ry, rz);
+	return forward_as_tuple(rx, ry, rz);
+}
+
+inline double VDW_forces_between(Molecule& mi, Molecule& mj)
+{
+	double r2, r6, r14;
+	double f;
+	r2 = r2_between(mi, mj);
+	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
+	if (r2 > CUTOFF_R2) return 0;
+	r6 = pow(r2, 3);
+	r14 = r6 * r6 * r2;
+	// calculate force between i-j with derivative of LJ potential
+	f = (24 * r6 - 48) / r14;
+	/*--- memo
+		本来はLJ potential の微分 f = (24 * r6 - 48) / r13 とすべき所だが、
+		f はそのまま使うわけではなく、続くx,y,z成分の計算で、
+		fx = f * rx / r などとして各成分の単位ベクトルを掛けて分解するので、
+		先にr14で割ってrxを掛ける、という順序でも問題ないと理解。
+	end memo ---*/
+	return f;
 }
 
 inline void init_MB_velocity(Molecule& m)
