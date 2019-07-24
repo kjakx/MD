@@ -9,21 +9,19 @@
 
 #endif
 
+using namespace std;
+
 double LJ_potential(Molecule& mi, Molecule& mj);
+double r2_between(Molecule& mi, Molecule& mj);
 void init_MB_velocity(Molecule& m);
 void correct_distance(double &dx, double &dy, double &dz);
 void correct_position(double &qx, double &qy, double &qz);
 
 inline double LJ_potential(Molecule& mi, Molecule& mj)
 {
-        double dx, dy, dz;
 	double r2, r6, r12, u;
-	// distance between i-j
-	dx = mj.qx - mi.qx;
-	dy = mj.qy - mi.qy;
-	dz = mj.qz - mi.qz;
-	correct_distance(dx, dy, dz);
-	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
+	// distance^2 between i-j
+	r2 = r2_between(mi, mj);
 	// the force between mi and mj will be ignored (= 0) if r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
@@ -31,6 +29,17 @@ inline double LJ_potential(Molecule& mi, Molecule& mj)
 	// LJ potential
 	u = 4.0 * (1.0 / r12 - 1.0 / r6) + U0;
 	return u;
+}
+
+inline r2_between(Molecule& mi, Molecule& mj)
+{
+	double dx, dy, dz;
+	dx = mj.qx - mi.qx;
+	dy = mj.qy - mi.qy;
+	dz = mj.qz - mi.qz;
+	correct_distance(dx, dy, dz);
+	r2 = pow(dx, 2) + pow(dy, 2) + pow(dz, 2);
+	return r2;
 }
 
 inline void init_MB_velocity(Molecule& m)
