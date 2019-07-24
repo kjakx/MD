@@ -21,7 +21,6 @@ private:
 	double time;
 	void update_position();
 	void update_velocity();
-	tuple<double, double, double> calculate_force(Molecule mi, Molecule mj);
 public:
 	System();
 	~System();
@@ -51,7 +50,6 @@ inline void System::update_position()
 		// periodic boundary condition
 		correct_position(m.qx, m.qy, m.qz);
 	}
-	
 }
 
 inline void System::update_velocity()
@@ -61,14 +59,8 @@ inline void System::update_velocity()
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
-			// calculate force between i-j
-			tie(fx, fy, fz) = calculate_force(molecules[i], molecules[j]);
-			molecules[i].px += fx * dt * 0.5;
-			molecules[i].py += fy * dt * 0.5;
-			molecules[i].pz += fz * dt * 0.5;
-			molecules[j].px -= fx * dt * 0.5;
-			molecules[j].py -= fy * dt * 0.5;
-			molecules[j].pz -= fz * dt * 0.5;
+			// interaction between i-j
+			molecules[i].interact_with(molecules[j]);
 		}
 	}
 }
@@ -127,7 +119,7 @@ inline double System::get_potential_energy()
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
 			// calculate LJ potential between i-j
-			U += LJ_potential(molecules[i], molecules[j]);
+			U += LJ_potential_between(molecules[i], molecules[j]);
 		}
 	}
 	return U;
@@ -166,34 +158,4 @@ inline void System::update()
 	update_position();
 	// 3. update(2) velocity on t + dt.
 	update_velocity();
-}
-
-inline tuple<double, double, double> System::calculate_force(Molecule mi, Molecule mj)
-{
-        double rx, ry, rz;
-	double r2, r6, r14;
-	double f, fx, fy, fz;
-	// distance between i-j
-	rx = mj.qx - mi.qx;
-	ry = mj.qy - mi.qy;
-	rz = mj.qz - mi.qz;
-	// periodic boundary condition
-	correct_distance(rx, ry, rz);
-	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
-	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
-	if (r2 > CUTOFF_R2) return 0;
-	r6 = pow(r2, 3);	
-	r14 = r6 * r6 * r2;
-	// calculate force between i-j with derivative of LJ potential
-	/*--- memo
-		本来はLJ potential の微分 f = (24 * r6 - 48) / r13 とすべき所だが、
-		f はそのまま使うわけではなく、続くx,y,z成分の計算で、
-		fx = f * rx / r などとして各成分の単位ベクトルを掛けて分解するので、
-		先にr14で割ってrxを掛ける、という順序でも問題ないと理解。
-	end memo ---*/
-	f = (24 * r6 - 48) / r14;
-	fx = f * rx;
-	fy = f * ry;
-	fz = f * rz;
-	return forward_as_tuple(fx, fy, fz);
 }
