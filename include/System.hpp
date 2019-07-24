@@ -16,20 +16,14 @@ class System
 {
 private:
 	vector<Molecule> molecules;
-	//double E;
-	//double T;
 	double time;
 	void update_position();
 	void update_velocity();
 public:
 	System();
 	~System();
-	// setter
-	void set_molecule(double qx, double qy, double qz);
-	//void set_energy(long double E);
-	//void set_temp(long double T);
+	void add_molecule(double qx, double qy, double qz);
 	// getter
-	//vector<Molecule>& get_molecules();
 	double get_kinetic_energy();
 	double get_potential_energy();
 	double get_energy();
@@ -54,7 +48,6 @@ inline void System::update_position()
 
 inline void System::update_velocity()
 {
-	double fx, fy, fz;
 	for (int i = 0; i < molecules.size() - 1; i++)
 	{
 		for (int j = i + 1; j < molecules.size(); j++)
@@ -75,7 +68,7 @@ inline ~System()
 	delete molecules;
 }
 
-inline void System::set_molecule(double qx, double qy, double qz);
+inline void System::add_molecule(double qx, double qy, double qz);
 {	
 	Molecule m;
 	m.qx = qx;
@@ -84,22 +77,7 @@ inline void System::set_molecule(double qx, double qy, double qz);
 	init_MB_verocity(m);
 	molecules.push_back(m);
 }
-/*
-inline void System::set_energy(long double E)
-{
-	this->E = E;
-}
 
-inline void System::set_temp(long double T)
-{
-	this->T = T;
-}
-
-inline vector<Molecule>& System::get_molecules()
-{
-	return molecules;
-}
-*/
 inline double System::get_kinetic_energy()
 {
 	double K = 0;
