@@ -2,7 +2,8 @@
 #define MOLECULE_HPP
 
 #include <cmath>
-//#include <tuple>
+#include <tuple>
+#include "Functions.hpp"
 #include "Constant.hpp"
 
 #endif
@@ -27,6 +28,7 @@ public:
 	//tuple<double, double, double> get_q();
 	//tuple<double, double, double> get_p();
 	double get_kinetic_energy();
+	void interact_with(Molecule& that);
 }
 
 inline Molecule(double qx, double qy, double qz)
@@ -69,4 +71,25 @@ inline double Molecule::get_kinetic_energy()
 	k += pow(py, 2);
 	k += pow(pz, 2);
 	return k * 0.5;
+}
+
+inline void Molecule::interact_with(Molecule& that)
+{
+        double rx, ry, rz;
+	double f, fx, fy, fz;
+	// components of distance between i-j
+	tie(rx, ry, rz) = r_xyz_between(this, that);
+	// calculate force between i-j with derivative of LJ potential
+	f = VDW_forces_between(this, that);
+	// components of forces between i-j
+	fx = f * rx;
+	fy = f * ry;
+	fz = f * rz;
+	// interaction!
+	this.px += fx * dt * 0.5;
+	this.py += fy * dt * 0.5;
+	this.pz += fz * dt * 0.5;
+	that.px -= fx * dt * 0.5;
+	that.py -= fy * dt * 0.5;
+	that.pz -= fz * dt * 0.5;
 }
