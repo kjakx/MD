@@ -32,6 +32,7 @@ const double dt_R = 0.01;			// calculation time step [s]
 const double T0 = T0_R / u_T;			// initial temperature [-]
 const double m0 = m0_R / u_m;			// mass of molecule [-]
 const double dt = dt_R / u_t;			// calculation time step [-]
+const double L = 10.0;
 //---
 
 //--- cutoff radius and potential U0
