@@ -1,5 +1,4 @@
-#ifndef	SYSTEM_HPP
-#define SYSTEM_HPP
+#pragma	once
 
 #include <cmath>
 #include <tuple>
@@ -7,8 +6,6 @@
 #include "Molecule.hpp"
 #include "Functions.hpp"
 #include "Constants.hpp"
-
-#endif
 
 using namespace std;
 
@@ -32,4 +29,4 @@ public:
 	// functions
 	void tick();
 	void update();
-}
+};

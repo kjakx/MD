@@ -1,5 +1,4 @@
-#ifndef FUNCTIONS_HPP
-#define FUNCTIONS_HPP
+#pragma once
 
 #include <cmath>
 #include <tuple>
@@ -7,8 +6,6 @@
 #include <vector>
 #include "Molecule.hpp"
 #include "Constants.hpp"
-
-#endif
 
 double LJ_potential_between(Molecule& mi, Molecule& mj);
 double VDW_forces_between(Molecule& mi, Molecule& mj);

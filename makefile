@@ -1,26 +1,35 @@
-TARGET=MD
+COMPILER  = g++
+CFLAGS    = -g -MMD -MP -Wall -Wextra -Winit-self -Wno-missing-field-initializers -std=c++11
+ifeq "$(shell getconf LONG_BIT)" "64"
+	LDFLAGS =
+else
+	LDFLAGS =
+endif
+LIBS      =
+INCLUDE   = -I./src/include -I./include -I.
+TARGET    = ./bin/$(shell basename `readlink -f .`)
+SRCDIR    = ./src
+ifeq "$(strip $(SRCDIR))" ""
+	SRCDIR  = .
+endif
+SOURCES   = $(wildcard $(SRCDIR)/*.cpp)
+OBJDIR    = ./obj
+ifeq "$(strip $(OBJDIR))" ""
+	OBJDIR  = .
+endif
+OBJECTS   = $(addprefix $(OBJDIR)/, $(notdir $(SOURCES:.cpp=.o)))
+DEPENDS   = $(OBJECTS:.o=.d)
 
-.SUFFIXES: .c .cc .h. .o
-SRC=$(shell ls ./src/*.cpp)
-HED=$(shell ls ./src/include/*.hpp)
-OBJ=$(SRC:.cpp=.o)
+$(TARGET): $(OBJECTS) $(LIBS)
+	$(COMPILER) -o $@ $^ $(LDFLAGS)
 
-CC=g++
-CPPFLAGS=-std=c++11 -march=native -Wall -Wextra -O3
--include makefile.opt
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	-mkdir -p $(OBJDIR)
+	$(COMPILER) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 
-all: MD
-
-MD: $(OBJ)
-	$(CC) $(CPPFLAGS) $(LDFLAGS) -o $(TARGET) $(OBJ)
-
-.cpp.o:
-	$(CC) $(CPPFLAGS) -c $< 
-
-dep:
-	g++  -std=gnu++11 -MM -MG $(SRC) >makefile.depend
+all: clean $(TARGET)
 
 clean:
-	rm -f $(TARGET) $(OBJ)
+	-rm -f $(OBJECTS) $(DEPENDS) $(TARGET)
 
--include makefile.depend
+-include $(DEPENDS)

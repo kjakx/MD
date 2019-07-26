@@ -1,5 +1,4 @@
-#ifndef MD_HPP
-#define MD_HPP
+#pragma once
 
 #define STEPS 10000
 #define SAMPLES 100
@@ -11,8 +10,6 @@
 #include "System.hpp"
 #include "Constant.hpp"
 
-#endif
-
 class MD
 {
 private:
@@ -22,4 +19,4 @@ public:
 	MD();
 	~MD();
 	void run();
-}
+};

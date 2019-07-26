@@ -1,4 +1,6 @@
 #include "Molecule.hpp"
+#include "Functions.hpp"
+#include "Constants.hpp"
 
 using namespace std;
 
@@ -11,13 +13,13 @@ Molecule(double qx, double qy, double qz)
 	init_MB_velocity(this);
 }
 
-tuple<double, double, double> Md::r_xyz_to(Molecule& that)
+tuple<double, double, double> Molecule::r_xyz_to(Molecule& that)
 {
 	double rx, ry, rz;
 	// components of distance between i-j
-	rx = that.qx - this.qx;
-	ry = that.qy - this.qy;
-	rz = that.qz - this.qz;
+	rx = that.qx - this->qx;
+	ry = that.qy - this->qy;
+	rz = that.qz - this->qz;
 	// periodic boundary condition
 	correct_distance(rx, ry, rz);
 	return forward_as_tuple(rx, ry, rz);
@@ -25,7 +27,7 @@ tuple<double, double, double> Md::r_xyz_to(Molecule& that)
 
 double Molecule::r2_to(Molecule& that)
 {
-	double rx, ry, rz;
+	double rx, ry, rz, r2;
 	tie(rx, ry, rz) = this->r_xyz_to(that);
 	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
 	return r2;
@@ -42,7 +44,7 @@ double Molecule::get_kinetic_energy()
 
 void Molecule::interact_with(Molecule& that)
 {
-        double rx, ry, rz;
+	double rx, ry, rz;
 	double f, fx, fy, fz;
 	// components of distance between i-j
 	tie(rx, ry, rz) = this->r_xyz_to(that);
@@ -54,9 +56,9 @@ void Molecule::interact_with(Molecule& that)
 	fz = f * rz;
 	// interaction!
 	// action
-	this.px += fx * dt * 0.5;
-	this.py += fy * dt * 0.5;
-	this.pz += fz * dt * 0.5;
+	this->px += fx * dt * 0.5;
+	this->py += fy * dt * 0.5;
+	this->pz += fz * dt * 0.5;
 	// reaction
 	that.px -= fx * dt * 0.5;
 	that.py -= fy * dt * 0.5;

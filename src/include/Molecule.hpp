@@ -1,12 +1,7 @@
-#ifndef MOLECULE_HPP
-#define MOLECULE_HPP
+#pragma once
 
 #include <cmath>
 #include <tuple>
-#include "Functions.hpp"
-#include "Constant.hpp"
-
-#endif
 
 using namespace std;
 
@@ -23,4 +18,4 @@ public:
 	double r2_to(Molecule& that);
 	tuple<double, double, double> r_xyz_to(Molecule& that);
 	void interact_with(Molecule& that);
-}
+};
