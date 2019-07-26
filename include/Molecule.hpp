@@ -20,6 +20,8 @@ public:
 // method:
 	Molecule(double qx, double qy, double qz);
 	double get_kinetic_energy();
+	double r2_to(Molecule& that);
+	tuple<double, double, double> r_xyz_to(Molecule& that);
 	void interact_with(Molecule& that);
 }
 
@@ -30,6 +32,26 @@ inline Molecule(double qx, double qy, double qz)
 	this->qy = qy;
 	this->qz = qz;
 	init_MB_velocity(this);
+}
+
+inline tuple<double, double, double> Md::r_xyz_to(Molecule& that)
+{
+	double rx, ry, rz;
+	// components of distance between i-j
+	rx = that.qx - this.qx;
+	ry = that.qy - this.qy;
+	rz = that.qz - this.qz;
+	// periodic boundary condition
+	correct_distance(rx, ry, rz);
+	return forward_as_tuple(rx, ry, rz);
+}
+
+inline double Molecule::r2_to(Molecule& that)
+{
+	double rx, ry, rz;
+	tie(rx, ry, rz) = this->r_xyz_to(that);
+	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
+	return r2;
 }
 
 inline double Molecule::get_kinetic_energy()
@@ -46,7 +68,7 @@ inline void Molecule::interact_with(Molecule& that)
         double rx, ry, rz;
 	double f, fx, fy, fz;
 	// components of distance between i-j
-	tie(rx, ry, rz) = r_xyz_between(this, that);
+	tie(rx, ry, rz) = this->r_xyz_between(that);
 	// calculate force between i-j with derivative of LJ potential
 	f = VDW_forces_between(this, that);
 	// components of forces between i-j
