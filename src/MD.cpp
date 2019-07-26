@@ -22,24 +22,19 @@ void MD::config_molecules()
 		{
 			for (int ix = 0; ix < is; ix++)
 			{
-				sys.add_molecules(ix * s, iy * s, iz * s);
-				sys.add_molecules(ix * s + hs, iy * s, iz * s);
-				sys.add_molecules(ix * s, iy * s + hs, iz * s);
-				sys.add_molecules(ix * s, iy * s, iz * s + hs);
+				sys.add_molecule(ix * s, iy * s, iz * s);
+				sys.add_molecule(ix * s + hs, iy * s, iz * s);
+				sys.add_molecule(ix * s, iy * s + hs, iz * s);
+				sys.add_molecule(ix * s, iy * s, iz * s + hs);
 			}
 		}
 	}
 }
 
-MD()
+MD::MD()
 {
 	sys = System();
 	config_molecules();
-}
-
-~MD()
-{
-	delete sys;
 }
 
 void MD::run()

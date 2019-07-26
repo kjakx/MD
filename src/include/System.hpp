@@ -18,14 +18,13 @@ private:
 	void update_velocity();
 public:
 	System();
-	~System();
 	void add_molecule(double qx, double qy, double qz);
 	// getter
 	double get_kinetic_energy();
 	double get_potential_energy();
 	double get_energy();
 	double get_time();
-	unsigned long int get_num_of_mol();
+	size_t get_num_of_mol();
 	// functions
 	void tick();
 	void update();

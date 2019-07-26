@@ -1,6 +1,6 @@
 #include "Functions.hpp"
 
-double LJ_potential(Molecule* mi, Molecule* mj)
+double LJ_potential_between(Molecule* mi, Molecule* mj)
 {
 	double r2, r6, r12, u;
 	// distance^2 between i-j
@@ -40,7 +40,7 @@ void init_MB_velocity(Molecule* m)
 	double sigma;
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
-	sigma = sqrt(kB * T0 / m.mass);
+	sigma = sqrt(kB * T0);
 	normal_distribution<> dist(0.0, sigma);
 	m->px = dist(engine);
 	m->py = dist(engine);

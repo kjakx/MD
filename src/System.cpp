@@ -9,14 +9,15 @@ void System::update_position()
 		m->qx += m->px * dt;
 		m->qy += m->py * dt;
 		m->qz += m->pz * dt;
+		correct_position(m->qx, m->qy, m->qz);
 	}
 }
 
 void System::update_velocity()
 {
-	for (int i = 0; i < molecules.size() - 1; i++)
+	for (size_t i = 0; i < molecules.size() - 1; i++)
 	{
-		for (int j = i + 1; j < molecules.size(); j++)
+		for (size_t j = i + 1; j < molecules.size(); j++)
 		{
 			// interaction between i-j
 			molecules[i]->interact_with(molecules[j]);
@@ -24,23 +25,14 @@ void System::update_velocity()
 	}
 }
 
-System()
+System::System()
 {
 	time = 0;
 }	
 
-~System()
-{
-	delete molecules;
-}
-
-void System::add_molecule(double qx, double qy, double qz);
+void System::add_molecule(double qx, double qy, double qz)
 {	
-	Molecule* m;
-	m->qx = qx;
-	m->qy = qy;
-	m->qz = qz;
-	init_MB_verocity(m);
+	Molecule* m = new Molecule(qx, qy, qz);
 	molecules.push_back(m);
 }
 
@@ -58,9 +50,9 @@ double System::get_kinetic_energy()
 double System::get_potential_energy()
 {
 	double U = 0;
-	for (int i = 0; i < molecules.size() - 1; i++)
+	for (size_t i = 0; i < molecules.size() - 1; i++)
 	{
-		for (int j = i + 1; j < molecules.size(); j++)
+		for (size_t j = i + 1; j < molecules.size(); j++)
 		{
 			// calculate LJ potential between i-j
 			U += LJ_potential_between(molecules[i], molecules[j]);
@@ -80,10 +72,10 @@ double System::get_energy()
 
 double System::get_time()
 {
-	retuen time;
+	return time;
 }
 
-unsigned long int System::get_num_of_mol()
+size_t System::get_num_of_mol()
 {
 	return molecules.size();
 }
@@ -102,8 +94,6 @@ void System::update()
 	update_position();
 	// 3. update(2) velocity on t + dt.
 	update_velocity();
-	// 4. consider periodic boundary condition.
-	correct_position();
-	// 5. increase time by dt.
+	// 4. increase time by dt.
 	tick();
 }

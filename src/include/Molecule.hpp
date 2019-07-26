@@ -9,10 +9,10 @@ class Molecule
 {
 public:
 // property:
-	double mass;
 	double qx, qy, qz;
 	double px, py, pz;
 // method:
+	Molecule();
 	Molecule(double qx, double qy, double qz);
 	double get_kinetic_energy();
 	double r2_to(Molecule* that);

@@ -1,12 +1,12 @@
 COMPILER  = g++
-CFLAGS    = -g -MMD -MP -Wall -Wextra -Winit-self -Wno-missing-field-initializers -std=c++11
+CFLAGS    = -g -MMD -MP -Wall -Wextra -Winit-self -Wno-missing-field-initializers -std=c++17
 ifeq "$(shell getconf LONG_BIT)" "64"
 	LDFLAGS =
 else
 	LDFLAGS =
 endif
 LIBS      =
-INCLUDE   = -I./src/include -I./include -I.
+INCLUDE   = -I./src/include
 TARGET    = ./bin/$(shell basename `readlink -f .`)
 SRCDIR    = ./src
 ifeq "$(strip $(SRCDIR))" ""

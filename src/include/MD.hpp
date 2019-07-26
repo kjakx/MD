@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include "System.hpp"
-#include "Constant.hpp"
+#include "Constants.hpp"
 
 class MD
 {
@@ -17,6 +17,5 @@ private:
 	void config_molecules();
 public:
 	MD();
-	~MD();
 	void run();
 };

@@ -4,9 +4,14 @@
 
 using namespace std;
 
-Molecule(double qx, double qy, double qz)
+Molecule::Molecule()
 {
-	mass = m0 / u_m;
+	Molecule(0, 0, 0);
+	init_MB_velocity(this);
+}
+
+Molecule::Molecule(double qx, double qy, double qz)
+{
 	this->qx = qx;
 	this->qy = qy;
 	this->qz = qz;
