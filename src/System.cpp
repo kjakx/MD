@@ -19,7 +19,7 @@ void System::update_velocity()
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
 			// interaction between i-j
-			molecules[i].interact_with(molecules[j]);
+			molecules[i].interact_with(*molecules[j]);
 		}
 	}
 }
