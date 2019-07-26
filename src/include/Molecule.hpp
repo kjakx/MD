@@ -16,6 +16,6 @@ public:
 	Molecule(double qx, double qy, double qz);
 	double get_kinetic_energy();
 	double r2_to(Molecule* that);
-	tuple<double, double, double> r_xyz_to(Molecule& that);
+	tuple<double, double, double> r_xyz_to(Molecule that);
 	void interact_with(Molecule* that);
 };
