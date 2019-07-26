@@ -4,7 +4,7 @@ double LJ_potential(Molecule* mi, Molecule* mj)
 {
 	double r2, r6, r12, u;
 	// distance^2 between i-j
-	r2 = mi.r2_to(mj);
+	r2 = mi->r2_to(mj);
 	// the force between mi and mj will be ignored (= 0) if r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
@@ -18,7 +18,7 @@ double VDW_forces_between(Molecule* mi, Molecule* mj)
 {
 	double r2, r6, r14;
 	double f;
-	r2 = mi.r2_to(mj);
+	r2 = mi->r2_to(mj);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3);
