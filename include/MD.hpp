@@ -18,15 +18,14 @@ class MD
 {
 private:
 	System sys;
-	void config_molecules(istream& istr);
-	void calculate();
+	void config_molecules();
 public:
 	MD();
 	~MD();
 	void run();
 }
 
-inline void MD::config_molecules(istream& istr)
+inline void MD::config_molecules()
 {
 	/*--- いずれはファイルや標準ストリームから読み込めるようにする
 	while (true)
@@ -36,12 +35,23 @@ inline void MD::config_molecules(istream& istr)
 		sys.set_molecule(qx, qy, qz);
 	}
 	---*/
-}
-
-inline void MD::calculate();
-{
-	sys.update();
-	sys.tick();
+	const double density = 0.50;
+	const double s = 1.0 / pow(density * 0.25, 1.0 / 3.0);
+	const double hs = s * 0.5;
+	const int is = static_cast<int>(L / s);
+	for (int iz = 0; iz < is; iz++)
+	{
+		for (int iy = 0; iy < is; iy++)
+		{
+			for (int ix = 0; ix < is; ix++)
+			{
+				sys.add_molecules(ix * s, iy * s, iz * s);
+				sys.add_molecules(ix * s + hs, iy * s, iz * s);
+				sys.add_molecules(ix * s, iy * s + hs, iz * s);
+				sys.add_molecules(ix * s, iy * s, iz * s + hs);
+			}
+		}
+	}
 }
 
 inline MD()
@@ -71,6 +81,6 @@ inline void MD::run()
 			cout << sys.get_potential_energy() << "\t";
 			cout << sys.get_energy() << endl;
 		}
-		calculate();
+		sys.update();
 	}
 }
