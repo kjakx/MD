@@ -68,7 +68,7 @@ inline void Molecule::interact_with(Molecule& that)
         double rx, ry, rz;
 	double f, fx, fy, fz;
 	// components of distance between i-j
-	tie(rx, ry, rz) = this->r_xyz_between(that);
+	tie(rx, ry, rz) = this->r_xyz_to(that);
 	// calculate force between i-j with derivative of LJ potential
 	f = VDW_forces_between(this, that);
 	// components of forces between i-j
