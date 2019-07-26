@@ -4,6 +4,7 @@
 #define STEPS 10000
 #define SAMPLES 100
 
+#include <cmath>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -57,7 +58,7 @@ inline void MD::config_molecules()
 inline MD()
 {
 	sys = System();
-	config_molecules(cin);
+	config_molecules();
 }
 
 inline ~MD()
