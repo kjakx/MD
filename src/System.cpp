@@ -4,11 +4,11 @@ using namespace std;
 
 void System::update_position()
 {
-	for (Molecule &m : molecules)
+	for (Molecule *m : molecules)
 	{
-		m.qx += m.px * dt;
-		m.qy += m.py * dt;
-		m.qz += m.pz * dt;
+		m->qx += m->px * dt;
+		m->qy += m->py * dt;
+		m->qz += m->pz * dt;
 	}
 }
 
@@ -19,7 +19,7 @@ void System::update_velocity()
 		for (int j = i + 1; j < molecules.size(); j++)
 		{
 			// interaction between i-j
-			molecules[i].interact_with(*molecules[j]);
+			molecules[i]->interact_with(molecules[j]);
 		}
 	}
 }
@@ -36,10 +36,10 @@ System()
 
 void System::add_molecule(double qx, double qy, double qz);
 {	
-	Molecule m;
-	m.qx = qx;
-	m.qy = qy;
-	m.qz = qz;
+	Molecule* m;
+	m->qx = qx;
+	m->qy = qy;
+	m->qz = qz;
 	init_MB_verocity(m);
 	molecules.push_back(m);
 }
@@ -47,10 +47,10 @@ void System::add_molecule(double qx, double qy, double qz);
 double System::get_kinetic_energy()
 {
 	double K = 0;
-	for (Molecule &m : molecules)
+	for (Molecule *m : molecules)
 	{
 		// sum up kinetic energies of all molecules.
-		K += m.get_kinetic_energy();
+		K += m->get_kinetic_energy();
 	}
 	return K;
 }
