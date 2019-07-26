@@ -1,10 +1,10 @@
 #include "Functions.hpp"
 
-double LJ_potential(Molecule& mi, Molecule& mj)
+double LJ_potential(Molecule* mi, Molecule* mj)
 {
 	double r2, r6, r12, u;
 	// distance^2 between i-j
-	r2 = mi.r2_to(*mj);
+	r2 = mi.r2_to(mj);
 	// the force between mi and mj will be ignored (= 0) if r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
@@ -14,11 +14,11 @@ double LJ_potential(Molecule& mi, Molecule& mj)
 	return u;
 }
 
-double VDW_forces_between(Molecule& mi, Molecule& mj)
+double VDW_forces_between(Molecule* mi, Molecule* mj)
 {
 	double r2, r6, r14;
 	double f;
-	r2 = mi.r2_to(*mj);
+	r2 = mi.r2_to(mj);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3);
@@ -34,7 +34,7 @@ double VDW_forces_between(Molecule& mi, Molecule& mj)
 	return f;
 }
 
-void init_MB_velocity(Molecule& m)
+void init_MB_velocity(Molecule* m)
 {
 	// Maxwell-Boltzmann distribution
 	double sigma;
@@ -42,36 +42,36 @@ void init_MB_velocity(Molecule& m)
 	default_random_engine engine(seed_gen());
 	sigma = sqrt(kB * T0 / m.mass);
 	normal_distribution<> dist(0.0, sigma);
-	m.px = m.mass * dist(engine);
-	m.py = m.mass * dist(engine);
-	m.pz = m.mass * dist(engine);
+	m->px = dist(engine);
+	m->py = dist(engine);
+	m->pz = dist(engine);
 }
 
-void correct_distance(double& dx, double& dy, double& dz)
+void correct_distance(double& rx, double& ry, double& rz)
 {
-	if (dx > 0.5 * Lx)
+	if (rx > 0.5 * Lx)
 	{
-		dx -= Lx;
+		rx -= Lx;
 	}
-	else if (dx < -0.5 * Lx)
+	else if (rx < -0.5 * Lx)
 	{
-		dx += Lx;
+		rx += Lx;
 	}
-	if (dy > 0.5 * Ly)
+	if (ry > 0.5 * Ly)
 	{
-		dy -= Ly;
+		ry -= Ly;
 	}
-	else if (dy < -0.5 * Ly)
+	else if (ry < -0.5 * Ly)
 	{
-		dy += Ly;
+		ry += Ly;
 	}
-	if (dz > 0.5 * Lz)
+	if (rz > 0.5 * Lz)
 	{
-		dz -= Lz;
+		rz -= Lz;
 	}
-	else if (dz < -0.5 * Lz)
+	else if (rz < -0.5 * Lz)
 	{
-		dz += Lz;
+		rz += Lz;
 	}
 }
 
