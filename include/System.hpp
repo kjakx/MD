@@ -41,8 +41,6 @@ inline void System::update_position()
 		m.qx += m.px * dt;
 		m.qy += m.py * dt;
 		m.qz += m.pz * dt;
-		// periodic boundary condition
-		correct_position(m.qx, m.qy, m.qz);
 	}
 }
 
@@ -136,4 +134,8 @@ inline void System::update()
 	update_position();
 	// 3. update(2) velocity on t + dt.
 	update_velocity();
+	// 4. consider periodic boundary condition.
+	correct_position();
+	// 5. increase time by dt.
+	tick();
 }
