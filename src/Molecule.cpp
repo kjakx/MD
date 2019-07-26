@@ -25,10 +25,10 @@ tuple<double, double, double> Molecule::r_xyz_to(Molecule* that)
 	return forward_as_tuple(rx, ry, rz);
 }
 
-double Molecule::r2_to(Molecule& that)
+double Molecule::r2_to(Molecule* that)
 {
 	double rx, ry, rz, r2;
-	tie(rx, ry, rz) = this->r_xyz_to(*that);
+	tie(rx, ry, rz) = this->r_xyz_to(that);
 	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
 	return r2;
 }
