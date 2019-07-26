@@ -43,6 +43,7 @@ const double CUTOFF_R12 = pow(CUTOFF_R6, 2);
 const double U0 = - 4 * (1.0 / CUTOFF_R12 - 1.0 / CUTOFF_R6);
 //---
 
+/*
 int main()
 {
 	cout << "### unit of variables ###" << endl;
@@ -59,3 +60,4 @@ int main()
 	cout << "U\t=\t" << u_U << "[J]" << endl;
   	return 0;
 }
+*/
