@@ -12,7 +12,7 @@ using namespace std;
 class System
 {
 private:
-	vector<Molecule> molecules;
+	vector<Molecule*> molecules;
 	double time;
 	void update_position();
 	void update_velocity();
