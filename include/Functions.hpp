@@ -12,39 +12,18 @@
 
 using namespace std;
 
-tuple<double, double, double> r_xyz_between(Molecule mi, Molecule mj);
-double r2_between(Molecule mi, Molecule mj);
-double LJ_potential_between(Molecule mi, Molecule mj);
-double VDW_forces_between(Molecule mi, Molecule mj);
+
+double LJ_potential_between(Molecule& mi, Molecule& mj);
+double VDW_forces_between(Molecule& mi, Molecule& mj);
 void init_MB_velocity(Molecule& m);
 void correct_distance(double &dx, double &dy, double &dz);
 void correct_position(double &qx, double &qy, double &qz);
 
-inline tuple<double, double, double> r_xyz_between(Molecule mi, Molecule mj)
-{
-	double rx, ry, rz;
-	// components of distance between i-j
-	rx = mj.qx - mi.qx;
-	ry = mj.qy - mi.qy;
-	rz = mj.qz - mi.qz;
-	// periodic boundary condition
-	correct_distance(rx, ry, rz);
-	return forward_as_tuple(rx, ry, rz);
-}
-
-inline double r2_between(Molecule mi, Molecule mj)
-{
-	double rx, ry, rz;
-	tie(rx, ry, rz) = r_xyz_between(mi, mj);
-	r2 = pow(rx, 2) + pow(ry, 2) + pow(rz, 2);
-	return r2;
-}
-
-inline double LJ_potential(Molecule mi, Molecule mj)
+inline double LJ_potential(Molecule& mi, Molecule& mj)
 {
 	double r2, r6, r12, u;
 	// distance^2 between i-j
-	r2 = r2_between(mi, mj);
+	r2 = mi->r2_to(mj);
 	// the force between mi and mj will be ignored (= 0) if r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3); 
@@ -54,11 +33,11 @@ inline double LJ_potential(Molecule mi, Molecule mj)
 	return u;
 }
 
-inline double VDW_forces_between(Molecule mi, Molecule mj)
+inline double VDW_forces_between(Molecule& mi, Molecule& mj)
 {
 	double r2, r6, r14;
 	double f;
-	r2 = r2_between(mi, mj);
+	r2 = mi->r2_to(mj);
 	// the force from molecule mj to molecule mi will be ignored when r2 > CUTOFF_R2.
 	if (r2 > CUTOFF_R2) return 0;
 	r6 = pow(r2, 3);
