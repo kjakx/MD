@@ -20,7 +20,7 @@ const static double u_U = eV;				// energy [J]
 //---
 
 //--- variables in real value
-const static double T0_R = 273.15;			// initial temperature [K]
+const static double T0_R = 50.0;			// initial temperature [K]
 const static double m0_R = u_m;			// mass of molecule [kg]
 const static double dt_R = 0.01;			// calculation time step [s]
 //---
