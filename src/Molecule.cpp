@@ -7,7 +7,6 @@ using namespace std;
 Molecule::Molecule()
 {
 	Molecule(0, 0, 0);
-	init_MB_velocity(this);
 }
 
 Molecule::Molecule(double qx, double qy, double qz)
