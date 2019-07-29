@@ -12,7 +12,7 @@ void MD::config_molecules()
 		sys.set_molecule(qx, qy, qz);
 	}
 	---*/
-	const double density = 0.50;
+	const double density = 0.5;
 	const double s = 1.0 / pow(density * 0.25, 1.0 / 3.0);
 	const double hs = s * 0.5;
 	const int is = static_cast<int>(L / s);
@@ -23,9 +23,9 @@ void MD::config_molecules()
 			for (int ix = 0; ix < is; ix++)
 			{
 				sys.add_molecule(ix * s, iy * s, iz * s);
-				sys.add_molecule(ix * s + hs, iy * s, iz * s);
-				sys.add_molecule(ix * s, iy * s + hs, iz * s);
-				sys.add_molecule(ix * s, iy * s, iz * s + hs);
+				sys.add_molecule(ix * s + hs, iy * s + hs, iz * s);
+				sys.add_molecule(ix * s + hs, iy * s, iz * s + hs);
+				sys.add_molecule(ix * s, iy * s + hs, iz * s + hs);
 			}
 		}
 	}
