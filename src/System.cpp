@@ -6,9 +6,9 @@ void System::update_position()
 {
 	for (Molecule *m : molecules)
 	{
-		m->qx += m->px * dt;
-		m->qy += m->py * dt;
-		m->qz += m->pz * dt;
+		m->qx += m->px_prev * dt;
+		m->qy += m->py_prev * dt;
+		m->qz += m->pz_prev * dt;
 		correct_position(m->qx, m->qy, m->qz);
 	}
 }
@@ -34,6 +34,11 @@ void System::add_molecule(double qx, double qy, double qz)
 {	
 	Molecule* m = new Molecule(qx, qy, qz);
 	molecules.push_back(m);
+}
+
+Molecule* System::get_molecule(size_t index)
+{
+	return molecules[index];
 }
 
 double System::get_kinetic_energy()

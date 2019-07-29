@@ -11,6 +11,7 @@ public:
 // property:
 	double qx, qy, qz;
 	double px, py, pz;
+	double px_prev, py_prev, pz_prev;
 // method:
 	Molecule();
 	Molecule(double qx, double qy, double qz);

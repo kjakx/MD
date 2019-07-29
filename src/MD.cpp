@@ -31,6 +31,28 @@ void MD::config_molecules()
 	}
 }
 
+void MD::export_cdview()
+{
+	double x, y, z;
+	ofstream output_file;
+	ostringstream oss;
+	// set filename
+	ios::fmtflags curret_flag = cout.flags();
+	oss << "./vis/" << setw(4) << std::setfill('0') << steps << ".cdv";
+	string filename(oss.str());
+	std::cout.flags(curret_flag);
+	// open output file 
+	output_file.open(filename, ios::out);
+	for (size_t i = 0; i < sys.get_num_of_mol(); i++)
+	{
+		x = sys.get_molecule(i)->qx;
+		y = sys.get_molecule(i)->qy;
+		z = sys.get_molecule(i)->qz;
+		output_file << i << " " << 0 << " " << x << " " << y << " " << z << endl;
+	}
+	output_file.close();
+}
+
 MD::MD()
 {
 	sys = System();
@@ -48,6 +70,8 @@ void MD::run()
 	{
 		if (i % SAMPLES == 0)
 		{
+			steps = i / SAMPLES;
+			export_cdview();
 			cout << sys.get_time() << "\t";
 			cout << sys.get_kinetic_energy() << "\t";
 			cout << sys.get_potential_energy() << "\t";

@@ -20,6 +20,7 @@ public:
 	System();
 	void add_molecule(double qx, double qy, double qz);
 	// getter
+	Molecule* get_molecule(size_t index);
 	double get_kinetic_energy();
 	double get_potential_energy();
 	double get_energy();
