@@ -54,13 +54,6 @@ void Molecule::interact_with(Molecule* that)
 	tie(rx, ry, rz) = this->r_xyz_to(that);
 	// calculate force between i-j with derivative of LJ potential
 	f = VDW_forces_between(this, that);
-	// preserve p for calculation of position
-	this->px_prev = this->px;
-	this->py_prev = this->py;
-	this->pz_prev = this->pz;
-	that->px_prev = that->px;
-	that->py_prev = that->py;
-	that->pz_prev = that->pz;
 	// components of forces between i-j
 	fx = f * rx;
 	fy = f * ry;

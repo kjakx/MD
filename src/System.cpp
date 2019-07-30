@@ -6,9 +6,9 @@ void System::update_position()
 {
 	for (Molecule *m : molecules)
 	{
-		m->qx += m->px_prev * dt;
-		m->qy += m->py_prev * dt;
-		m->qz += m->pz_prev * dt;
+		m->qx += m->px * dt;
+		m->qy += m->py * dt;
+		m->qz += m->pz * dt;
 		correct_position(m->qx, m->qy, m->qz);
 	}
 }
