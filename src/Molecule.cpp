@@ -14,7 +14,20 @@ Molecule::Molecule(double qx, double qy, double qz)
 	this->qx = qx;
 	this->qy = qy;
 	this->qz = qz;
-	init_MB_velocity(this);
+	this->init_velocity();
+}
+
+void Molecule::init_velocity()
+{
+	// Maxwell-Boltzmann distribution
+	double sigma;
+	sigma = sqrt(kB * T0_R);
+	random_device seed_gen;
+	default_random_engine engine(seed_gen());
+	normal_distribution<> dist(0.0, sigma);
+	this->px = dist(engine) / u_v;
+	this->py = dist(engine) / u_v;
+	this->pz = dist(engine) / u_v;
 }
 
 tuple<double, double, double> Molecule::r_xyz_to(Molecule* that)

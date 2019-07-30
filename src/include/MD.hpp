@@ -1,6 +1,6 @@
 #pragma once
 
-#define STEPS 10000
+#define STEPS 100000
 #define SAMPLES 100
 
 #include <cmath>

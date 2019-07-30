@@ -14,6 +14,7 @@ public:
 // method:
 	Molecule();
 	Molecule(double qx, double qy, double qz);
+	void init_velocity();
 	double get_kinetic_energy();
 	double r2_to(Molecule* that);
 	tuple<double, double, double> r_xyz_to(Molecule* that);

@@ -34,19 +34,6 @@ double VDW_forces_between(Molecule* mi, Molecule* mj)
 	return f;
 }
 
-void init_MB_velocity(Molecule* m)
-{
-	// Maxwell-Boltzmann distribution
-	double sigma;
-	random_device seed_gen;
-	default_random_engine engine(seed_gen());
-	sigma = sqrt(kB * T0);
-	normal_distribution<> dist(0.0, sigma);
-	m->px = dist(engine);
-	m->py = dist(engine);
-	m->pz = dist(engine);
-}
-
 void correct_distance(double& rx, double& ry, double& rz)
 {
 	if (rx > 0.5 * Lx)
