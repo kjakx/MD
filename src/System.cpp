@@ -25,6 +25,21 @@ void System::update_velocity()
 	}
 }
 
+void System::control_temperature()
+{
+	double T = get_temperature();
+	if (abs(T0 - T) / T0 > 0.05)
+	{
+		for (Molecule *m : molecules)
+		{
+			// velocity scaling method
+			m->px *= sqrt(T0 / T);
+			m->py *= sqrt(T0 / T);
+			m->pz *= sqrt(T0 / T);
+		}
+	}
+}
+
 System::System()
 {
 	time = 0;
@@ -83,6 +98,17 @@ double System::get_energy()
 	return E;
 }
 
+double System::get_temperature()
+{
+	double T = 0;
+	for (Molecule *m : molecules)
+	{
+		T += pow(m->px, 2) + pow(m->py, 2) + pow(m->pz, 2);
+	}
+	T /= 3 * molecules.size();
+	return T;
+}
+
 double System::get_time()
 {
 	return time;
@@ -107,6 +133,8 @@ void System::update()
 	update_position();
 	// 3. update(2) velocity on t + dt.
 	update_velocity();
-	// 4. increase time by dt.
+	// 4. control temperature (for NVT ensemble).
+	control_temperature();
+	// 5. increase time by dt.
 	tick();
 }

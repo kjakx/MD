@@ -63,7 +63,9 @@ void MD::run()
 	cout << "time\t";
 	cout << "Kinetic Energy\t";
 	cout << "Potential Energy\t";
-	cout << "Energy" << endl;
+	cout << "Energy\t";
+	cout << "Temperature\t";
+	cout << "Set_T" << endl;
 	for (int i = 0; i <= STEPS; i++)
 	{
 		if (i % SAMPLES == 0)
@@ -73,7 +75,9 @@ void MD::run()
 			cout << sys.get_time() << "\t";
 			cout << sys.get_kinetic_energy() << "\t";
 			cout << sys.get_potential_energy() << "\t";
-			cout << sys.get_energy() << endl;
+			cout << sys.get_energy() << "\t";
+			cout << sys.get_temperature() << "\t";
+			cout << T0 << endl;
 		}
 		sys.update();
 	}

@@ -16,6 +16,7 @@ private:
 	double time;
 	void update_position();
 	void update_velocity();
+	void control_temperature();
 public:
 	System();
 	~System();
@@ -25,6 +26,7 @@ public:
 	double get_kinetic_energy();
 	double get_potential_energy();
 	double get_energy();
+	double get_temperature();
 	double get_time();
 	size_t get_num_of_mol();
 	// functions
