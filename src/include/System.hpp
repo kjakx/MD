@@ -18,6 +18,7 @@ private:
 	void update_velocity();
 public:
 	System();
+	~System();
 	void add_molecule(double qx, double qy, double qz);
 	// getter
 	Molecule* get_molecule(size_t index);

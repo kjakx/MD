@@ -20,7 +20,7 @@ const static double u_rho = u_m / pow(u_d, 3);		// density [kg/m3]
 //---
 
 //--- variables in real value
-const static double T0_R = 100.0;			// initial temperature [K]
+const static double T0_R = 300.0;			// initial temperature [K]
 const static double m0_R = u_m;				// mass of molecule [kg]
 const static double dt_R = 0.5 * pow(10, -15);		// calculation time step [s]
 const static double LC_R = 5.43 * pow(10, -10);		// lattice constant [m]

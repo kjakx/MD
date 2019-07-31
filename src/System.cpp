@@ -28,7 +28,15 @@ void System::update_velocity()
 System::System()
 {
 	time = 0;
-}	
+}
+
+System::~System()
+{
+	for (Molecule *m : molecules)
+	{
+		delete m;
+	}
+}
 
 void System::add_molecule(double qx, double qy, double qz)
 {	

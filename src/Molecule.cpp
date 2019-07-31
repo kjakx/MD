@@ -21,7 +21,7 @@ void Molecule::init_velocity()
 {
 	// Maxwell-Boltzmann distribution
 	double sigma;
-	sigma = sqrt(kB * T0_R);
+	sigma = sqrt(kB * T0_R / m0_R);
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
 	normal_distribution<> dist(0.0, sigma);
