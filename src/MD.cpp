@@ -1,4 +1,11 @@
 #include "MD.hpp"
+#include "System.hpp"
+#include "Constants.hpp"
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -36,7 +43,7 @@ void MD::export_cdview()
 	ostringstream oss;
 	// set filename
 	ios::fmtflags curret_flag = cout.flags();
-	oss << "./vis/" << setw(4) << std::setfill('0') << steps << ".cdv";
+	oss << "./vis/" << setw(4) << setfill('0') << steps << ".cdv";
 	string filename(oss.str());
 	std::cout.flags(curret_flag);
 	// open output file 

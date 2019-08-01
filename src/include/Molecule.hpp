@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cmath>
 #include <tuple>
 
 using namespace std;
@@ -14,6 +13,8 @@ public:
 // method:
 	Molecule();
 	Molecule(double qx, double qy, double qz);
+	Molecule(double qx, double qy, double qz,
+             double px, double py, double pz);
 	void init_velocity();
 	double get_kinetic_energy();
 	double r2_to(Molecule* that);

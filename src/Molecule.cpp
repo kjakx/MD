@@ -1,6 +1,9 @@
 #include "Molecule.hpp"
 #include "Functions.hpp"
 #include "Constants.hpp"
+#include <cmath>
+#include <tuple>
+#include <random>
 
 using namespace std;
 
@@ -15,6 +18,17 @@ Molecule::Molecule(double qx, double qy, double qz)
 	this->qy = qy;
 	this->qz = qz;
 	this->init_velocity();
+}
+
+Molecule::Molecule(double qx, double qy, double qz,
+                   double px, double py, double pz)
+{
+	this->qx = qx;
+	this->qy = qy;
+	this->qz = qz;
+	this->px = px;
+	this->py = py;
+	this->pz = pz;
 }
 
 void Molecule::init_velocity()
@@ -52,10 +66,8 @@ double Molecule::r2_to(Molecule* that)
 
 double Molecule::get_kinetic_energy()
 {
-	double k = 0;
-	k += pow(px, 2);
-	k += pow(py, 2);
-	k += pow(pz, 2);
+	double k;
+	k = pow(px, 2) + pow(py, 2) + pow(pz, 2);
 	return k * 0.5;
 }
 

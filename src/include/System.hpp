@@ -1,11 +1,7 @@
 #pragma	once
 
-#include <cmath>
-#include <tuple>
-#include <vector>
 #include "Molecule.hpp"
-#include "Functions.hpp"
-#include "Constants.hpp"
+#include <vector>
 
 using namespace std;
 

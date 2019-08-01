@@ -1,4 +1,8 @@
 #include "System.hpp"
+#include "Functions.hpp"
+#include "Constants.hpp"
+#include <cmath>
+#include <vector>
 
 using namespace std;
 

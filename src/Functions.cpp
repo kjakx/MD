@@ -1,4 +1,7 @@
 #include "Functions.hpp"
+#include "Constants.hpp"
+#include <cmath>
+#include <vector>
 
 double LJ_potential_between(Molecule* mi, Molecule* mj)
 {
