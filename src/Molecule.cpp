@@ -44,6 +44,14 @@ void Molecule::init_velocity()
 	this->pz = dist(engine) / u_v;
 }
 
+void Molecule::update_position()
+{
+    this->qx += this->px * dt;
+	this->qy += this->py * dt;
+	this->qz += this->pz * dt;
+	correct_position(this->qx, this->qy, this->qz);
+}
+
 tuple<double, double, double> Molecule::r_xyz_to(Molecule* that)
 {
 	double rx, ry, rz;
