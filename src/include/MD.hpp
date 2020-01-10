@@ -8,11 +8,11 @@
 class MD
 {
 private:
-	System sys;
-	size_t steps = 0;
-	void config_molecules();
-	void export_cdview();
+    System sys;
+    size_t steps = 0;
+    void config_molecules();
+    void export_cdview();
 public:
-	MD();
-	void run();
+    MD();
+    void run();
 };

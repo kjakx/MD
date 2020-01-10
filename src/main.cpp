@@ -2,7 +2,7 @@
 
 int main()
 {
-	MD md;
-	md.run();
-	return 0;
+    MD md;
+    md.run();
+    return 0;
 }
