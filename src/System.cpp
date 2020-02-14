@@ -56,8 +56,7 @@ System::~System()
 
 void System::add_molecule(double qx, double qy, double qz)
 {    
-    Molecule* m = new Molecule(qx, qy, qz);
-    molecules.push_back(m);
+    molecules.push_back(new Molecule(qx, qy, qz));
 }
 
 Molecule* System::get_molecule(size_t index)
