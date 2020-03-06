@@ -7,28 +7,12 @@
 
 using namespace std;
 
-Molecule::Molecule()
-{
-    Molecule(0, 0, 0);
-}
-
 Molecule::Molecule(double qx, double qy, double qz)
 {
     this->qx = qx;
     this->qy = qy;
     this->qz = qz;
     this->init_velocity();
-}
-
-Molecule::Molecule(double qx, double qy, double qz,
-                   double px, double py, double pz)
-{
-    this->qx = qx;
-    this->qy = qy;
-    this->qz = qz;
-    this->px = px;
-    this->py = py;
-    this->pz = pz;
 }
 
 void Molecule::init_velocity()
