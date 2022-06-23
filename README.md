@@ -1,5 +1,5 @@
 ﻿# MD
-minimum implementation of MD for my learning
+minimum implementation of MD for my personal learning
 
 ## How to play
 cloneしてmakeすれば一応動きます  
